@@ -1,4 +1,5 @@
-const applicationSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const proposalSchema = new mongoose.Schema({
   freelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   coverLetter: String,
@@ -13,4 +14,4 @@ const applicationSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Application', applicationSchema);
+module.exports = mongoose.model('Proposal', proposalSchema);

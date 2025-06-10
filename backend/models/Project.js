@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
@@ -13,7 +14,7 @@ const projectSchema = new mongoose.Schema({
 
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   assignedFreelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }],
+  applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' }],
   
   createdAt: { type: Date, default: Date.now }
 });

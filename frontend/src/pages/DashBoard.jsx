@@ -1,6 +1,6 @@
 import React from 'react';
 import './Dashboard.css'; // External CSS file
-
+import { Link } from "react-router-dom";
 function Dashboard() {
   return (
     <>
@@ -11,17 +11,21 @@ function Dashboard() {
             <div className="logo">
                 <h3>Freelancer</h3>
             </div>
-            <div className="my-profile">
-                <h3>profile</h3>
-            </div>
+            <div>
+              <Link
+                to="/profile"
+              >
+                <button>my profile</button>
+              </Link>
+          </div>
         </div>
         
         <div className='my-projects'>
           <button>My Projects</button>
         </div>
-        <div className='rating-button'>
+        {/* <div className='rating-button'>
           <button>My Ratings</button>
-        </div>
+        </div> */}
         <div className="post-project-button">
           <button>Post a Project</button>
         </div>  
@@ -29,6 +33,7 @@ function Dashboard() {
         <div className="dashboard-content">
             <h1>Welcome to Your Dashboard!</h1>
         </div>
+ 
  
     </div>
     </>

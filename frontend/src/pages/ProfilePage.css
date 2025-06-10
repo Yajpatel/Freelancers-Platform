@@ -1,0 +1,121 @@
+/* FreelancerProfile.css */
+
+.profile-container {
+  max-width: 64rem; /* same as max-w-5xl */
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-image {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.profile-info h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.profile-info p {
+  margin: 0.25rem 0;
+}
+
+.profile-rating {
+  display: flex;
+  align-items: center;
+  color: #facc15; /* Tailwind yellow-500 */
+  margin-top: 0.25rem;
+}
+
+.profile-rating span {
+  color: #4b5563; /* Tailwind gray-600 */
+  margin-left: 0.5rem;
+}
+
+.edit-btn {
+  margin-left: auto;
+  background-color: #2563eb; /* Tailwind blue-600 */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.edit-btn:hover {
+  background-color: #1d4ed8; /* Tailwind blue-700 */
+}
+
+.section {
+  margin-top: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.section-text {
+  color: #374151; /* Tailwind gray-700 */
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-badge {
+  background-color: #dbeafe; /* Tailwind blue-100 */
+  color: #1d4ed8; /* Tailwind blue-700 */
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.portfolio-card {
+  border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.portfolio-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-image {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+}
+
+.portfolio-title {
+  padding: 0.5rem;
+  font-weight: 500;
+  text-align: center;
+}
