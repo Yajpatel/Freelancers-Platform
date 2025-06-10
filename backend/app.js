@@ -6,7 +6,10 @@ const app = express();
 app.use(cors());
 
 async function main(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/Freelancer');
+    await mongoose.connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
 }
 main().then((result) => {
     console.log('mongoose connected');
@@ -15,7 +18,6 @@ main().then((result) => {
 });
 // app.use(express.urlencoded({extended:true}));
 // app.use();
-
 
 let PORT = process.env.PORT || 8000;
 app.get('/Home',(req,res)=>{
