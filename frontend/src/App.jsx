@@ -16,7 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<HomePage />} /> {/* optional if /home redirection is used */}
         <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/freelancer/:id/profile" element={<ProfilePage />} />
+        <Route path="/profile/:id" element={<ProfilePage />} />
 
       </Routes>
     </Router>

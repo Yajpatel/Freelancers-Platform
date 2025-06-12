@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css'; // External CSS file
 import { Link } from "react-router-dom";
+import { auth } from '../firebase/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 function Dashboard() {
+  const [firebaseUID, setFirebaseUID] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setFirebaseUID(user.uid); // Set the Firebase UID for the current user
+      }
+    });
+    return () => unsubscribe(); // Cleanup
+  }, []);
   return (
     <>
     <div className="container">  
@@ -10,7 +22,7 @@ function Dashboard() {
                 <h3>Freelancer</h3>
             </div>
             <div>
-              <Link to={`/freelancer/65a1234b123abc123abc1234/profile`}>
+              <Link to={`/profile/${firebaseUID}`}>
 				<button>my profile</button>
 			</Link>
 

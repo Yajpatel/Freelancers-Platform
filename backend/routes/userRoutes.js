@@ -30,4 +30,22 @@ router.post('/saveUser', async (req, res) => {
   }
 });
 
+router.get('/getuser/:id',async (req,res)=>{
+  let { id } = req.params;
+  try {
+    // Find by firebaseUID, not id (id would look inside MongoDB _id)
+    const curruser = await User.findOne({ firebaseUID: id });
+
+      if (curruser) {
+        console.log('✅ user found');
+        return res.json(curruser);
+      } else {
+        console.log('❌ user not found');
+        return res.status(404).json({ message: 'User not found' });
+      }
+  } catch (error) {
+    console.error('❌ Error fetching user:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
 module.exports = router;

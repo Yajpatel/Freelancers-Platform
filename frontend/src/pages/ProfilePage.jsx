@@ -8,7 +8,7 @@ function ProfilePage() {
   const [freelancer, setFreelancer] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/freelancers/${id}`)
+    axios.get(`http://localhost:8000/api/users/getuser/${id}`)
       .then(res => setFreelancer(res.data))
       .catch(err => console.error("Error fetching freelancer:", err));
   }, [id]);
@@ -22,6 +22,7 @@ function ProfilePage() {
           <img src="/profile.jpg" alt="Profile" className="profile-image" />
           <div className="profile-info">
             <h2>{freelancer.name}</h2>
+            <h2>{freelancer.email}</h2>
             <p className="text-gray-600">{freelancer.title}</p>
             <p className="text-gray-400">{freelancer.location}</p>
             <div className="profile-rating">
