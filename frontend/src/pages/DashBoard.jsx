@@ -4,19 +4,16 @@ import { Link } from "react-router-dom";
 function Dashboard() {
   return (
     <>
-
-    <div className="container">
-        
+    <div className="container">  
         <div className="header">
             <div className="logo">
                 <h3>Freelancer</h3>
             </div>
             <div>
-              <Link
-                to="/profile"
-              >
-                <button>my profile</button>
-              </Link>
+              <Link to={`/freelancer/65a1234b123abc123abc1234/profile`}>
+				<button>my profile</button>
+			</Link>
+
           </div>
         </div>
         
@@ -33,8 +30,6 @@ function Dashboard() {
         <div className="dashboard-content">
             <h1>Welcome to Your Dashboard!</h1>
         </div>
- 
- 
     </div>
     </>
   );

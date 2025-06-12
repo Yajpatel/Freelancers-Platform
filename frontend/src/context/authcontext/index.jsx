@@ -32,9 +32,25 @@ export function AuthProvider({ children }) {
       const isGoogle = user.providerData.some(
         (provider) => provider.providerId === GoogleAuthProvider.PROVIDER_ID
       );
+      
       setIsGoogleUser(isGoogle);
 
       setUserLoggedIn(true);
+
+      // // 🔁 SYNC to MongoDB backend
+      // try {
+      //   await fetch("http://localhost:8000/api/users/saveUser", {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({
+      //       email: user.email,
+      //       name: user.displayName || "", // optional
+      //     }),
+      //   });
+      // } catch (error) {
+      //   console.error("Failed to sync user:", error);
+      // }
+
     } else {
       setCurrentUser(null);
       setUserLoggedIn(false);

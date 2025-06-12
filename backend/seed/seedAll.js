@@ -25,17 +25,18 @@ mongoose.connect(MONGO_URI, {
     // 1. Seed Users
     const users = await User.insertMany([
       {
-        name: 'Client User',
+        name: 'User1',
         email: 'client@example.com',
-        password: 'client123',
+        
+        // password: 'client123',
         bio: 'Client looking for freelancers',
         skills: ['Management', 'Communication'],
         rating: 4.2
       },
       {
-        name: 'Freelancer User',
+        name: 'User2',
         email: 'freelancer@example.com',
-        password: 'freelancer123',
+        // password: 'freelancer123',
         bio: 'Freelancer who works hard',
         skills: ['Node.js', 'React', 'MongoDB'],
         rating: 4.8
