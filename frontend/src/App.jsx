@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './components/auth/register/register'
 import DashBoard from './pages/DashBoard'
 import ProfilePage from './pages/ProfilePage'
+import SearchProjects from './pages/SearchProjects'
+
 function App() {
   return (
     <>
@@ -17,7 +19,7 @@ function App() {
         <Route path="/home" element={<HomePage />} /> {/* optional if /home redirection is used */}
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/profile/:id" element={<ProfilePage />} />
-
+        <Route path="/project/SearchProjects" element={<SearchProjects />} />
       </Routes>
     </Router>
     </>

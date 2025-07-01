@@ -1,31 +1,35 @@
-const mongoose = require('mongoose');
 const User = require('../models/User');
 
-const userSeedData = User.insertMany([
-  {
-    name: 'Client User',
-    email: 'client@example.com',
-    password: 'client123',
-    bio: 'Client looking for freelancers',
-    skills: ['Management', 'Communication'],
-    rating: 4.2
-  },
-  {
-    name: 'Freelancer User',
-    email: 'freelancer@example.com',
-    password: 'freelancer123',
-    bio: 'Freelancer who works hard',
-    skills: ['Node.js', 'React', 'MongoDB'],
-    rating: 4.8
-  }
-])
-  .then(res => {
-    console.log('✅ Users seeded');
-    return res;
-  })
-  .catch(err => {
-    console.error('❌ Error seeding users:', err);
-    return [];
-  });
+const userSeedData = async () => {
+  const users = await User.insertMany([
+    {
+      name: 'Alice Johnson',
+      email: 'alice@example.com',
+      firebaseUID: 'uid-alice',
+      bio: 'Full-stack developer with 5 years of experience.',
+      skills: ['JavaScript', 'Node.js', 'React'],
+      rating: 4.5
+    },
+    {
+      name: 'Bob Smith',
+      email: 'bob@example.com',
+      firebaseUID: 'uid-bob',
+      bio: 'Graphic designer and branding expert.',
+      skills: ['Photoshop', 'Illustrator', 'Logo Design'],
+      rating: 4.8
+    },
+    {
+      name: 'Charlie Adams',
+      email: 'charlie@example.com',
+      firebaseUID: 'uid-charlie',
+      bio: 'Backend engineer specialized in APIs and MongoDB.',
+      skills: ['Node.js', 'Express', 'MongoDB'],
+      rating: 4.6
+    }
+  ]);
+
+  console.log('✅ Users seeded');
+  return users;
+};
 
 module.exports = userSeedData;

@@ -31,7 +31,7 @@
                     const user = userCredential.user;
 
                     // 🔁 Send user data to backend to sync with MongoDB
-                    await fetch("http://localhost:8000/api/users/saveUser", {
+                    await fetch("http://localhost:8000/freelancer/users/saveUser", {
                         method: "POST",
                         headers: {
                         "Content-Type": "application/json"

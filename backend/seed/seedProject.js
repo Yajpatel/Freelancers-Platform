@@ -1,37 +1,31 @@
-const mongoose = require('mongoose');
 const Project = require('../models/Project');
 
 const projectSeedData = async (users) => {
-  return Project.insertMany([
+  const projects = await Project.insertMany([
     {
-      title: 'Build an E-commerce Website',
-      description: 'Develop a fully-functional e-commerce site.',
+      title: 'Build a Portfolio Website',
+      description: 'Create a modern personal portfolio site.',
       category: 'Web Development',
-      budget: 1200,
-      deadline: new Date('2025-07-01'),
+      budget: 500,
+      deadline: new Date('2025-07-10'),
       client: users[0]._id,
       assignedFreelancer: users[1]._id,
       status: 'in-progress'
     },
     {
-      title: 'Create a Logo for a Startup',
-      description: 'Design a professional logo.',
+      title: 'Design Social Media Graphics',
+      description: '10 custom social media templates.',
       category: 'Design',
       budget: 300,
-      deadline: new Date('2025-07-10'),
-      client: users[0]._id,
-      assignedFreelancer: users[1]._id,
+      deadline: new Date('2025-07-05'),
+      client: users[1]._id,
+      assignedFreelancer: users[2]._id,
       status: 'completed'
     }
-  ])
-    .then(res => {
-      console.log('✅ Projects seeded');
-      return res;
-    })
-    .catch(err => {
-      console.error('❌ Error seeding projects:', err);
-      return [];
-    });
+  ]);
+
+  console.log('✅ Projects seeded');
+  return projects;
 };
 
 module.exports = projectSeedData;

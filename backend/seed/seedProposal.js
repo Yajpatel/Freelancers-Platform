@@ -1,31 +1,25 @@
-const mongoose = require('mongoose');
-const Application = require('../models/Application');
+const Proposal = require('../models/Proposal');
 
-const applicationSeedData = async (users, projects) => {
-  return Application.insertMany([
+const proposalSeedData = async (projects, users) => {
+  const proposals = await Proposal.insertMany([
     {
-      freelancer: users[1]._id,
+      freelancer: users[2]._id,
       project: projects[0]._id,
-      coverLetter: 'I am confident I can deliver this project effectively.',
-      proposedRate: 1100,
-      status: 'accepted'
+      coverLetter: 'Hi, I can deliver this website quickly.',
+      proposedRate: 480,
+      status: 'pending'
     },
     {
-      freelancer: users[1]._id,
+      freelancer: users[0]._id,
       project: projects[1]._id,
-      coverLetter: 'I have great experience with branding and logos.',
-      proposedRate: 280,
+      coverLetter: 'I’m great at graphic design. Let’s work together.',
+      proposedRate: 290,
       status: 'accepted'
     }
-  ])
-    .then(res => {
-      console.log('✅ Applications seeded');
-      return res;
-    })
-    .catch(err => {
-      console.error('❌ Error seeding applications:', err);
-      return [];
-    });
+  ]);
+
+  console.log('✅ Proposals seeded');
+  return proposals;
 };
 
-module.exports = applicationSeedData;
+module.exports = proposalSeedData;

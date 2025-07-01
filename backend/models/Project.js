@@ -14,7 +14,7 @@ const projectSchema = new mongoose.Schema({
 
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   assignedFreelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' }],
+  Proposal: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' }],
   
   createdAt: { type: Date, default: Date.now }
 });
