@@ -10,12 +10,12 @@ function SearchProjects(){
     // search projects keywords and matches and put to filteredprojects
     const [mainsearch,setmainsearch] = useState(); 
     // takes input from the sidebar as user wants and than filter projects according to that than push to filteredprojects
-    const [sidebarfilter,setsidebarfilter] = useState({budget:'',tech : []}); 
+    const [sidebarfilter,setsidebarfilter] = useState({budget:{min : '',max : ''},tech : []});
     // main filter in which all the filtered projects are pushed and than displayed to user
     const [filteredprojects,setfilteredprojects] =  useState([]); 
 
 
-    // fetch data from database and store to projects hook and 
+    // fetch data from database and store to projects hook and
     // // also initial without filter data will be same so also store same to filteredprojects
      useEffect(() => {
     axios.get('http://localhost:8000/project/SearchProjects') // Change to your backend

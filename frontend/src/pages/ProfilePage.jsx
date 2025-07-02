@@ -8,10 +8,18 @@ function ProfilePage() {
   const [freelancer, setFreelancer] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/users/getuser/${id}`)
-      .then(res => setFreelancer(res.data))
-      .catch(err => console.error("Error fetching freelancer:", err));
+
+    axios.get(`http://localhost:8000/freelancer/users/getuser/${id}`) 
+      .then(res => {setFreelancer(res.data)
+        console.log("data coming " ,res.data);
+      })
+      .catch(err => {
+        console.error("Error fetching freelancer:", err)
+    console.log("data  not coming ");}
+  );
   }, [id]);
+
+
 
   if (!freelancer) return <div>Loading...</div>;
 

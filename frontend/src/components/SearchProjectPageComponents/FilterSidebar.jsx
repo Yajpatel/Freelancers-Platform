@@ -1,32 +1,81 @@
+import React from 'react';
+// import './FilterSidebar.css';
+
 function FilterSidebar({ filters, setFilters }) {
-  const handleTechChange = (tech) => {
-    const updated = filters.tech.includes(tech)
-      ? filters.tech.filter(t => t !== tech)
-      : [...filters.tech, tech];
-    setFilters(prev => ({ ...prev, tech: updated }));
+  const techOptions = ['React', 'Node.js', 'MongoDB', 'Figma', 'Java', 'Python', 'HTML', 'CSS'];
+
+  const handleTechChange = (e) => {
+    const value = e.target.value;
+    if (!filters.tech.includes(value)) {
+      setFilters({...filters,tech :[...filters.tech,value]});
+      // setFilters(prev => ({
+      //   ...prev,
+      //   tech: [...prev.tech, value]
+      // }));
+    }
   };
 
-  return (
-    <div className="filters">
-      <h3>Budget</h3>
-      <select value={filters.budget} onChange={(e) => setFilters(prev => ({ ...prev, budget: e.target.value }))}>
-        <option value="">All</option>
-        <option value="low">&lt; ₹5000</option>
-        <option value="mid">₹5000 - ₹10000</option>
-        <option value="high">&gt; ₹10000</option>
-      </select>
+  const removeTech = (skill) => {
+    setFilters({...filters,tech :[...filters.tech.filter(i => i!=skill)]});
+    // setFilters(prev => ({
+    //   ...prev,
+    //   tech: prev.tech.filter(t => t !== skill)
+    // }));
+  };
 
-      <h3>Tech Stack</h3>
-      {['React', 'Node', 'Python', 'Java'].map(tech => (
-        <label key={tech}>
+  const handleBudgetChange = (e) => {
+    const { name, value } = e.target;
+    setFilters({...filters,budget :{...filters,[name]:value}});
+    // setFilters(prev => ({
+    //   ...prev,
+    //   budgetRange: { ...prev.budgetRange, [name]: value }
+    // }));
+  };
+ 
+  return (
+    <div className="filter-sidebar">
+      <h3>Filter Projects</h3>
+
+      <div className="filter-section">
+        <label>Tech Stack</label>
+        <input type="text" name='tech' value={filters.tech} />
+        <select onChange={handleTechChange} defaultValue="">
+          <option value="" disabled>Select tech</option>
+          {techOptions.map((tech, idx) => (
+            <option key={idx} value={tech}>{tech}</option>
+          ))}
+        </select>
+
+        <div className="selected-techs">
+          {filters.tech.map((skill, i) => (
+            <span key={i} className="tech-chip">
+              {skill}
+              <button onClick={() => removeTech(skill)}>×</button>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="filter-section">
+        <label>Budget (₹)</label>
+        <div className="budget-inputs">
           <input
-            type="checkbox"
-            checked={filters.tech.includes(tech)}
-            onChange={() => handleTechChange(tech)}
+            type="number"
+            name="min"
+            placeholder="min"
+            value={filters.budgetRange?.min || ''}
+            onChange={handleBudgetChange}
           />
-          {tech}
-        </label>
-      ))}
+          <span>to</span>
+          <input
+            type="number"
+            name="max"
+            placeholder="max"
+            value={filters.budgetRange?.max || ''}
+            onChange={handleBudgetChange}
+          />
+        </div>
+      </div>
     </div>
   );
 }
