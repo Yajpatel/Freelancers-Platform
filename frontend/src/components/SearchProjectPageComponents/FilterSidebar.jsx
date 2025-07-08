@@ -38,7 +38,7 @@ function FilterSidebar({ filters, setFilters }) {
 
       <div className="filter-section">
         <label>Tech Stack</label>
-        <input type="text" name='tech' value={filters.tech} />
+        {/* <input type="text" name='tech' value={filters.tech} /> */}
         <select onChange={handleTechChange} defaultValue="">
           <option value="" disabled>Select tech</option>
           {techOptions.map((tech, idx) => (
