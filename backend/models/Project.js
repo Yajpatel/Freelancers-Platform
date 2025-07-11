@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: String,
-  category: String,
-  budget: Number,
-  deadline: Date,
+  description: { type: String, default: '' },
+  category: { type: String, default: '' },
+  budget: { type: Number, default: 0 },
+  deadline: { type: Date },
 
   status: {
     type: String,
@@ -12,10 +13,11 @@ const projectSchema = new mongoose.Schema({
     default: 'open'
   },
 
-  client: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  assignedFreelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  Proposal: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' }],
-  
+  client: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },           // User acting as Client
+  assignedFreelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }, // User acting as Freelancer
+
+  proposals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' }],   // lowercase for collection naming consistency
+
   createdAt: { type: Date, default: Date.now }
 });
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './Dashboard.css'; 
+// import './Dashboard.css'; 
 import { Link } from "react-router-dom";
 import { auth } from '../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-
-function Dashboard() {
+import '../pages/DashBoard.css'
+function FreelancerDashboard() {
   const [firebaseUID, setFirebaseUID] = useState("");
 
   useEffect(() => {
@@ -54,4 +54,6 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+
+
+export default FreelancerDashboard;

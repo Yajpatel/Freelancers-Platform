@@ -6,8 +6,7 @@ function HomePage() {
   return (
     <div>
       <ul>
-        <li><Link to="/register"><button>Post Work</button></Link></li>
-        <li><Link to="/register"><button>Browse Work</button></Link></li>
+        <li><Link to="/register"><button>Get started</button></Link></li>
       </ul>
     </div>
   )

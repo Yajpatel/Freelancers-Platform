@@ -42,6 +42,7 @@ function Projectdetails() {
         <h3>Client Details</h3>
         {client ? (
           <>
+            <p><strong>Name:</strong> {client._id}</p>
             <p><strong>Name:</strong> {client.name}</p>
             <p><strong>Email:</strong> {client.email}</p>
             <p><strong>Verified:</strong> {client.firebaseUID ? '✅ Yes' : '❌ No'}</p>
