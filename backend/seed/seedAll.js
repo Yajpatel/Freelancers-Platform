@@ -51,7 +51,7 @@ mongoose.connect(MONGO_URI)
     for (let i = 0; i < numberOfUsers; i++) {
       const firstName = faker.person.firstName();
       const lastName = faker.person.lastName();
-      const userRoles = faker.helpers.arrayElements(['Client', 'Freelancer'], { min: 1, max: 2 }); // Each user is at least one role, possibly both
+      const userRoles = faker.helpers.arrayElements(['client', 'freelancer'], { min: 1, max: 2 }); // Each user is at least one role, possibly both
 
       usersToInsert.push({
         name: `${firstName} ${lastName}`,
@@ -70,8 +70,8 @@ mongoose.connect(MONGO_URI)
     console.log(`✅ ${insertedUsers.length} Users seeded.`);
 
     // Separate clients and freelancers based on their assigned roles
-    const clients = insertedUsers.filter(user => user.roles.includes('Client'));
-    const freelancers = insertedUsers.filter(user => user.roles.includes('Freelancer'));
+    const clients = insertedUsers.filter(user => user.roles.includes('client'));
+    const freelancers = insertedUsers.filter(user => user.roles.includes('creelancer'));
 
     // --- 4. Seed Projects (varied number) ---
     const projectsToInsert = [];

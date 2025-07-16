@@ -1,3 +1,82 @@
+require('dotenv').config()
+const mongoose = require('mongoose');
+const User = require('../models/User'); // Adjust path to your User model
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log("🚀 MongoDB Connected");
+  return seedUsers();
+})
+.catch((err) => console.error("MongoDB connection error:", err));
+
+async function seedUsers() {
+  try {
+    const users = [
+      {
+        name: 'Providenci Larson-Bogan',
+        email: 'providenci_larson-bogan@yahoo.com',
+        firebaseUID: 'Z9p7NhHdkqVxD0WJ1mrD8xp4w1G2',
+        bio: 'student',
+        profileImage: 'https://avatars.githubusercontent.com/u/45820220',
+        skills: ['TypeScript', 'Kubernetes', 'RESTful APIs'],
+        rating: 4.03594839424324,
+        postedProjects: [
+          new mongoose.Types.ObjectId('686a37cfa15d97b9014eaa27'),
+          new mongoose.Types.ObjectId('686a37cfa15d97b9014eaa28')
+        ],
+        roles: ['client'],
+        currentRole: 'client'
+      },
+      {
+        name: 'Delphine Franecki',
+        email: 'delphine.franecki@yahoo.com',
+        firebaseUID: 'KuFBUh05CURHSFC2QZwJT1Xjm562',
+        bio: 'founder, inventor, patriot',
+        profileImage: 'https://avatars.githubusercontent.com/u/35939650',
+        skills: ['C++', 'TypeScript', 'Vue.js', 'React', 'AWS', 'Angular'],
+        rating: 3.809407901804721,
+        postedProjects: [
+          new mongoose.Types.ObjectId('686a37cfa15d97b9014eaa33'),
+          new mongoose.Types.ObjectId('686a37cfa15d97b9014eaa34')
+        ],
+        takenProjects: [
+          new mongoose.Types.ObjectId('686a37cfa15d97b9014eaa2a'),
+          new mongoose.Types.ObjectId('686a37cfa15d97b9014eaa36')
+        ],
+        reviews: [
+          new mongoose.Types.ObjectId('686a37d7a15d97b9014eac5e'),
+          new mongoose.Types.ObjectId('686a37d7a15d97b9014eac61')
+        ],
+        roles: ['client', 'freelancer'],
+        currentRole: 'freelancer'
+      },
+      {
+        name: 'Hubert Runolfsdottir',
+        email: 'hubert_runolfsdottir@yahoo.com',
+        firebaseUID: 'p1DmUvA3teUqIFuX6CaKL82fqvj2',
+        bio: 'depot lover s',
+        profileImage: 'https://avatars.githubusercontent.com/u/78293305',
+        skills: ['Digital Marketing', 'SEO', 'TypeScript', 'Vuex'],
+        rating: 3.342842107802791,
+        roles: ['freelancer'],
+        currentRole: 'freelancer'
+      }
+    ];
+
+    await User.deleteMany(); // Optional: Clear existing users
+    await User.insertMany(users);
+    console.log("✅ Users seeded successfully.");
+  } catch (error) {
+    console.error("❌ Error seeding users:", error);
+  } finally {
+    mongoose.disconnect();
+  }
+}
+
+
 // require('dotenv').config();
 // // const mongoose = require('mongoose');
 // // const connectDB = require('../config/db');

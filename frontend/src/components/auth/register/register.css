@@ -97,3 +97,7 @@
 .login-link:hover {
     text-decoration: underline;
 }
+.google-button{
+    margin : 15px auto;
+
+}

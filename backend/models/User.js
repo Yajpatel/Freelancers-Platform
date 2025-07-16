@@ -18,13 +18,13 @@ const userSchema = new mongoose.Schema({
 
   roles: {
     type: [String],
-    enum: ['Client', 'Freelancer'],
+    enum: ['client', 'freelancer'],
     default: []    // 👉 No default role until user chooses
   },
 
   currentRole: {
     type: String,
-    enum: ['Client', 'Freelancer'],
+    enum: ['client', 'freelancer'],
     default: null  // 👉 No active role until explicitly chosen
   },
 

@@ -63,7 +63,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 // app.use();
 
-app.get('/Home',(req,res)=>{
+app.get('/health',(req,res)=>{
     res.send('Hy HOME');
 });
 

@@ -7,27 +7,67 @@ const mongoose = require('mongoose');
 router.post('/saveUser', async (req, res) => {
     console.log("Incoming user:", req.body);
   try {
-    const { email, name ,firebaseUID} = req.body;
+    const { email, name ,firebaseUID, role} = req.body;
 
     if (!email || !firebaseUID) {
-      return res.status(400).json({ message: 'Email i   s required' });
+      return res.status(400).json({ message: 'Email is required' });
     }
 
     // Check if user already exists
     let user = await User.findOne({ firebaseUID  });
 
     if (!user) {
-      user = new User({ email, name, firebaseUID });
+      user = new User({ email,
+        name,
+        firebaseUID ,
+        roles : [role.toLowerCase()],
+        currentRole : role
+      });
       await user.save();
       console.log('✅ Successfully registered new user');
     } else {
-      console.log('✅ Successfully logged in existing user');
+      console.log('user already exists');
     }
 
     return res.status(200).json({ user });
   } catch (err) {
     console.error('Error in /sync:', err);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'this has Internal server error' });
+  }
+});
+
+// PUT /freelancer/users/updaterole/:firebaseUID
+router.put('/updaterole/:firebaseUID', async (req, res) => {
+  const { firebaseUID } = req.params;
+  const { selectedRole } = req.body;
+
+  if (!selectedRole || !['client', 'freelancer'].includes(selectedRole)) {
+    return res.status(400).json({ message: 'Invalid or missing role.' });
+  }
+
+  try {
+    const user = await User.findOne({ firebaseUID });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Add role if not already present
+    if (!user.roles.includes(selectedRole)) {
+      user.roles.push(selectedRole);
+    }
+
+    // Update currentRole
+    user.currentRole = selectedRole;
+
+    await user.save();
+
+    console.log(`✅ Updated role for user ${firebaseUID} to ${selectedRole}`);
+    return res.status(200).json({ message: 'Role updated successfully.', user });
+
+  } catch (err) {
+    console.error('Error updating role:', err);
+    return res.status(500).json({ message: 'Internal server error.' });
   }
 });
 

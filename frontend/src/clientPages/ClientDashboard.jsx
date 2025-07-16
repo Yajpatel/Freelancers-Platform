@@ -8,4 +8,4 @@ const ClientDashboard = () => {
     );
 };
 
-export default ClientDashboard;<h1>freelancer Dashboard</h1>
+export default ClientDashboard;
