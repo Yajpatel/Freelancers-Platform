@@ -33,7 +33,6 @@ function FreelancerDashboard() {
       <nav className="main-navbar">
         <Link to="/dashboard" className="nav-link">Home</Link>
         <Link to="/project/SearchProjects" className="nav-link">Find Projects</Link>
-        <Link to="/findfreelancers" className="nav-link">Find Freelancers</Link>
         <Link to="/messages" className="nav-link">Messages</Link>
         <Link to="/my-projects" className="nav-link">My Projects</Link>
       </nav>
@@ -45,8 +44,8 @@ function FreelancerDashboard() {
 
         <div className="card-container">
           <div className="dashboard-card">Recent Projects</div>
-          <div className="dashboard-card">Top Freelancers</div>
-          <div className="dashboard-card">Your Activity</div>
+          {/* <div className="dashboard-card">Top Freelancers</div> */}
+          {/* <div className="dashboard-card">Your Activity</div> */}
         </div>
       </div>
 
