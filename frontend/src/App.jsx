@@ -6,12 +6,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './components/auth/register/register'
 // import DashBoard from './pages/DashBoard'
 import ProfilePage from './pages/ProfilePage'
-import SearchProjects from './pages/SearchProjects'
-import Projectdetails from './pages/Projectdetails'
+import SearchProjects from './freelancerPages/SearchProjects'
+import Projectdetails from './freelancerPages/Projectdetails'
 import Chat from './pages/Chat'
-import ClientDashboard from './clientPages/ClientDashboard'
+import ClientDashboard from './clientPages/ClientDashboard';
 import FreelancerDashboard from './freelancerPages/FreelancerDashboard'
 import RoleProvider from './context/Rolecontext';
+import Message from './pages/Message';
 // import
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
         <Route path="/project/SearchProjects" element={<SearchProjects />} />
         <Route path="/projectdetails/:id" element={<Projectdetails />} />
         <Route path="/chat/:id" element={<Chat/>}></Route>
+        <Route path="/messages" element={<Message/>}></Route>
+
       </Routes>
       </RoleProvider>
     </Router>

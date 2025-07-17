@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const messageRoutes = require('./routes/messagesRoutes')
 
-const message = require('./models/Message')
+const Message = require('./models/Message')
 // const { createServer } = require('node:http'); // same thing const http = require('http');
 
 const http = require('http');
@@ -16,7 +16,12 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server,{
+  cors: {
+    origin: 'http://localhost:5173',
+    credentials: true
+  }
+});
 
 
 // socket.io
@@ -57,7 +62,12 @@ connectDB();
 console.log(process.env.PORT);
 console.log(process.env.MONGO_URI);
 
-app.use(cors());
+app.use(cors(
+    {
+    origin : 'http://localhost:5173',
+
+    }
+));
 app.use(express.json()); 
 
 app.use(express.urlencoded({extended:true}));
@@ -72,6 +82,6 @@ app.use('/project',projectRoutes);
 app.use('/messages', messageRoutes);
 
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log('listening to PORT http://localhost:8000');
 });

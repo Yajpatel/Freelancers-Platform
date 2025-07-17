@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   firebaseUID: { type: String, unique: true, required: true },
 
   bio: { type: String, default: '' },
-  profileImage: { type: String, default: '' },  // Optional profile pic
+  profileImage: { type: String,  default:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" },  // Optional profile pic
 
   skills: { type: [String], default: [] },      // Relevant when acting as Freelancer
   rating: { type: Number, default: 0 },

@@ -156,7 +156,7 @@ const onGoogleSignIn = async (e) => {
             </button>
           </form>
           <p className="signup-link">
-            Don&apos;t have an account? <Link to="/signup">Sign up</Link>
+            Don&apos;t have an account? <Link to="/register">Sign up</Link>
           </p>
           <div className="or-divider">
             <span></span>

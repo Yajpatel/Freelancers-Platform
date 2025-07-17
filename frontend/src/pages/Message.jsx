@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../context/authcontext';
+import { useAuth } from '../context/authcontext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Message.css';
@@ -9,11 +9,13 @@ const Message = () => {
   const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
+    
     if (!currentUser?.uid) return;
 
     // Fetch recent conversations/messages where currentUser is involved
-    axios.get(`http://localhost:8000/freelancer/users/getMessages/${currentUser.uid}`)
+    axios.get(`http://localhost:8000/messages/getMessages/${currentUser.uid}`)
       .then(res => {
+        console.log(res);
         setConversations(res.data);
       })
       .catch(err => {
@@ -30,7 +32,7 @@ const Message = () => {
       ) : (
         <div className="message-cards">
           {conversations.map((chatUser, index) => (
-            <Link to={`/chat/${chatUser.otherUserId}`} key={index} className="message-card">
+            <Link to={`/chat/${chatUser._id}`} key={index} className="message-card">
               <div>
                 <h4>{chatUser.name}</h4>
                 <p>{chatUser.email}</p>

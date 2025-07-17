@@ -66,7 +66,7 @@ async function seedUsers() {
       }
     ];
 
-    await User.deleteMany(); // Optional: Clear existing users
+    // await User.deleteMany(); // Optional: Clear existing users
     await User.insertMany(users);
     console.log("✅ Users seeded successfully.");
   } catch (error) {

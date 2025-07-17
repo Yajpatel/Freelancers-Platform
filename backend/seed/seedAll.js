@@ -71,7 +71,7 @@ mongoose.connect(MONGO_URI)
 
     // Separate clients and freelancers based on their assigned roles
     const clients = insertedUsers.filter(user => user.roles.includes('client'));
-    const freelancers = insertedUsers.filter(user => user.roles.includes('creelancer'));
+    const freelancers = insertedUsers.filter(user => user.roles.includes('freelancer'));
 
     // --- 4. Seed Projects (varied number) ---
     const projectsToInsert = [];

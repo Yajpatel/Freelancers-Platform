@@ -3,7 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/SearchProjectPageComponents/Navbar';
 import ProjectCards from '../components/SearchProjectPageComponents/Projectcard';
 import FilterSidebar from '../components/SearchProjectPageComponents/FilterSidebar';
-import '../pages/SearchProjects.css';
+import './SearchProjects.css';
 function SearchProjects(){
     // takes all the data from backend which is open and client is null
     const [projects,setprojects] = useState([]); 

@@ -1,4 +1,4 @@
-import Projectdetails from "../../pages/Projectdetails";
+import Projectdetails from "../../freelancerPages/Projectdetails";
 import { Link } from 'react-router-dom';
 function ProjectCards({project}){
     return <>
