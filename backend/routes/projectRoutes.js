@@ -12,7 +12,7 @@ router.get('/SearchProjects',async (req,res)=>{
     console.log(pendingprojects);
     res.json(pendingprojects);
 });
-
+    
 router.get('/projectdetails/:id',async (req,res)=>{
     try {
         const project = await Project.findById(req.params.id).populate('client');

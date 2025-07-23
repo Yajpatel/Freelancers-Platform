@@ -13,6 +13,7 @@ import ClientDashboard from './clientPages/ClientDashboard';
 import FreelancerDashboard from './freelancerPages/FreelancerDashboard'
 import RoleProvider from './context/Rolecontext';
 import Message from './pages/Message';
+import ProposalForm from './freelancerPages/ProposalForm';
 // import
 function App() {
   return (
@@ -29,7 +30,9 @@ function App() {
         <Route path='/freelancer/dashboard' element={<FreelancerDashboard/>}></Route>
         <Route path="/profile/:id" element={<ProfilePage />} />
         <Route path="/project/SearchProjects" element={<SearchProjects />} />
-        <Route path="/projectdetails/:id" element={<Projectdetails />} />
+        <Route path="/project/projectdetails/:id" element={<Projectdetails />} />
+        <Route path="/project/proposal/:id" element={<ProposalForm />} />
+
         <Route path="/chat/:id" element={<Chat/>}></Route>
         <Route path="/messages" element={<Message/>}></Route>
 

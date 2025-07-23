@@ -24,7 +24,7 @@ const io = new Server(server,{
 });
 
 
-// socket.io
+// socket.io    
 io.on('connection',(socket)=>{
     console.log('New client connected',socket.id);
 
@@ -59,29 +59,36 @@ io.on('connection',(socket)=>{
 const PORT = process.env.PORT || 8000;
 // Connect to DB
 connectDB();
+// just i am checking that is env working or not///
 console.log(process.env.PORT);
 console.log(process.env.MONGO_URI);
 
+
+/// 
+// middlewares for allowing urls from frontend and 
 app.use(cors(
     {
     origin : 'http://localhost:5173',
 
     }
 ));
+// to detect the json response from frontend
 app.use(express.json()); 
-
+// if frontend return some submitted form than to get that response
 app.use(express.urlencoded({extended:true}));
-// app.use();
 
+// just for the testing that is backend on or not otherwise frontend will not go ahead in most files
+// example login sign up first checks if backend started ?
 app.get('/health',(req,res)=>{
     res.send('Hy HOME');
 });
 
+//routes that will redirect to my routes i have defined in routes
 app.use('/freelancer/users', userRoutes);
 app.use('/project',projectRoutes);
 app.use('/messages', messageRoutes);
 
-
+// default port i gave in env is 8000
 server.listen(PORT,()=>{
-    console.log('listening to PORT http://localhost:8000');
+    console.log(`Backend running on port ${PORT}`);
 });

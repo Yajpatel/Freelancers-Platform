@@ -13,6 +13,7 @@ const Message = () => {
     if (!currentUser?.uid) return;
 
     // Fetch recent conversations/messages where currentUser is involved
+    
     axios.get(`http://localhost:8000/messages/getMessages/${currentUser.uid}`)
       .then(res => {
         console.log(res);

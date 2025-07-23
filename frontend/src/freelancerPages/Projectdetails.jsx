@@ -34,7 +34,8 @@ function Projectdetails() {
         <p><strong>Budget:</strong> ₹{project.budget}</p>
         <p><strong>Deadline:</strong> {new Date(project.deadline).toLocaleDateString()}</p>
         <p><strong>Status:</strong> {project.status}</p>
-        <button className="apply-btn">Apply Proposal</button>
+        <Link to={`/project/proposal/${project._id}`}><button className="apply-btn">Apply Proposal</button></Link>
+        
       </div>
 
       {/* Right: Client Info */}

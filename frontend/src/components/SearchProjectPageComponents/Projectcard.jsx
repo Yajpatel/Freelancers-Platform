@@ -1,4 +1,3 @@
-import Projectdetails from "../../freelancerPages/Projectdetails";
 import { Link } from 'react-router-dom';
 function ProjectCards({project}){
     return <>
@@ -7,8 +6,8 @@ function ProjectCards({project}){
       <p>{project.description}</p>
       <p><strong>Budget:</strong> ₹{project.budget}</p>
       <p><strong>Skills:</strong> {project.skills?.join(', ')}</p>
-        <Link to={`/projectdetails/${project._id}`}><button className="apply-btn">Apply Proposal</button></Link>
-      
+      <Link to={`/project/projectdetails/${project._id}`}><button className="apply-btn">Apply Proposal</button></Link>
+        
     </div>
     </>
 }

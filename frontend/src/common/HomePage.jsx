@@ -1,43 +1,51 @@
 import React from 'react';
 import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';         
+import { useContext } from 'react';
 import { RoleContext } from '../context/Rolecontext';
+
 const HomePage = () => {
-  const { setRole } = useContext(RoleContext); 
+  const { setRole } = useContext(RoleContext);
   const navigate = useNavigate();
 
-  const selectedclient = ()=>{
+  const selectedclient = () => {
     setRole('client');
-    navigate('/register')
-  }
-  const selectedfreelancer = ()=>{
+    navigate('/register');
+  };
+  const selectedfreelancer = () => {
     setRole('freelancer');
     navigate('/register');
-  }
+  };
 
   return (
     <>
       <div className='container'>
-        <div className="client-container" onClick={selectedclient}>
-          <div className="client-card">
-            <h3>Get started as a Client</h3>
-            <p>I want to post projects</p>
+        <div className="split client-container" onClick={selectedclient}>
+          <div className="content-wrapper">
+            <h3>
+              I'm a <span>Client</span>
+            </h3>
+            <p>Looking to hire professionals for a project.</p>
+            <div className="cta-button">Post Work&rarr;</div>
           </div>
         </div>
-        <div className="freelancer-container" onClick={selectedfreelancer}>
-          <div className="freelancer-card">
-            <h3>Get started as a freelancer</h3>
-            <p>Searching for work</p>
+        <div className="split freelancer-container" onClick={selectedfreelancer}>
+          <div className="content-wrapper">
+            <h3>
+              I'm a <span>Freelancer</span>
+            </h3>
+            <p>Searching for my next creative opportunity.</p>
+            <div className="cta-button">Find Work &rarr;</div>
           </div>
         </div>
-
       </div>
-
     </>
   );
 };
+
 export default HomePage;
+
+
 
 // import React from 'react';
 // import './HomePage.css';
