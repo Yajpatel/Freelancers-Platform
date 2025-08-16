@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const mongoose = require('mongoose');
 
-// POST /api/users/sync
+// POST 
 router.post('/saveUser', async (req, res) => {
     console.log("Incoming user:", req.body);
   try {

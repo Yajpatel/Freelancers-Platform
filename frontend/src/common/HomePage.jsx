@@ -6,7 +6,9 @@ import { RoleContext } from '../context/Rolecontext';
 
 const HomePage = () => {
   const { setRole } = useContext(RoleContext);
+  // have to use navigate when there is condition like you have to click on a div and should resirect beacuse link tag doen not provide that and is not a good practice
   const navigate = useNavigate();
+
 
   const selectedclient = () => {
     setRole('client');
@@ -20,22 +22,22 @@ const HomePage = () => {
   return (
     <>
       <div className='container'>
-        <div className="split client-container" onClick={selectedclient}>
-          <div className="content-wrapper">
+        <div className="client-container" onClick={selectedclient}>
+          <div className="client-content">
             <h3>
               I'm a <span>Client</span>
             </h3>
-            <p>Looking to hire professionals for a project.</p>
-            <div className="cta-button">Post Work&rarr;</div>
+            <p>Looking for a person who could complete my project.</p>
+            <div className="client-button">Post Work&rarr;</div>
           </div>
         </div>
-        <div className="split freelancer-container" onClick={selectedfreelancer}>
-          <div className="content-wrapper">
+        <div className="freelancer-container" onClick={selectedfreelancer}>
+          <div className="freelancer-content">
             <h3>
               I'm a <span>Freelancer</span>
             </h3>
-            <p>Searching for my next creative opportunity.</p>
-            <div className="cta-button">Find Work &rarr;</div>
+            <p>Searching for work</p>
+            <div className="freelancer-button">Find Work &rarr;</div>
           </div>
         </div>
       </div>

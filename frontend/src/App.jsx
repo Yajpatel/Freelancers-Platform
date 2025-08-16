@@ -1,20 +1,20 @@
 // App.jsx
 // import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HomePage from './common/HomePage';
 import Login from './components/auth/login/login'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './components/auth/register/register'
 // import DashBoard from './pages/DashBoard'
-import ProfilePage from './pages/ProfilePage'
+import ProfilePage from './common/ProfilePage';
 import SearchProjects from './freelancerPages/SearchProjects'
 import Projectdetails from './freelancerPages/Projectdetails'
-import Chat from './pages/Chat'
+import Chat from './common/Chat';
 import ClientDashboard from './clientPages/ClientDashboard';
 import FreelancerDashboard from './freelancerPages/FreelancerDashboard'
 import RoleProvider from './context/Rolecontext';
-import Message from './pages/Message';
-import ProposalForm from './freelancerPages/ProposalForm';
-// import
+import Message from './common/Message';
+import Proposalspage from './clientPages/Proposalspage';
+import MyProjectpage from './clientPages/MyProjectpage';
 function App() {
   return (
     <>  
@@ -31,10 +31,12 @@ function App() {
         <Route path="/profile/:id" element={<ProfilePage />} />
         <Route path="/project/SearchProjects" element={<SearchProjects />} />
         <Route path="/project/projectdetails/:id" element={<Projectdetails />} />
-        <Route path="/project/proposal/:id" element={<ProposalForm />} />
+
 
         <Route path="/chat/:id" element={<Chat/>}></Route>
         <Route path="/messages" element={<Message/>}></Route>
+        <Route path="/myproposals" element={<Proposalspage/>}></Route>
+        <Route path="/my-projects" element={<MyProjectpage/>}></Route>
 
       </Routes>
       </RoleProvider>

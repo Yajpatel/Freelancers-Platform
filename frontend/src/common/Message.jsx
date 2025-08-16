@@ -7,7 +7,6 @@ import './Message.css';
 const Message = () => {
   const { currentUser } = useAuth();
   const [conversations, setConversations] = useState([]);
-
   useEffect(() => {
     
     if (!currentUser?.uid) return;

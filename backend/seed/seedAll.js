@@ -136,7 +136,8 @@ mongoose.connect(MONGO_URI)
           freelancer: proposer._id,
           project: project._id,
           coverLetter: faker.lorem.paragraph({ min: 2, max: 4 }),
-          proposedRate: faker.number.int({ min: project.budget * 0.4, max: project.budget * 1.1 }),
+          biddingAmount: faker.number.int({ min: project.budget * 0.4, max: project.budget * 1.1 }),
+          deliveryTime: faker.number.int({ min: 1, max: 30 }), // in days, matches schema
           status: faker.helpers.arrayElement(['pending', 'accepted', 'rejected']),
           createdAt: faker.date.recent({ days: 30 })
         });

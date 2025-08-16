@@ -8,10 +8,12 @@ const ClientDashboard = () => {
   const [unreadCount,setunreadCount] = useState(0);
 
 
-  useEffect(()=>{
+  // to fetch => get the messages which clent have not seen yet 
+
+  useEffect(() => {
     const fetchUnreadCount = async () => {
-    if (!currentUser?.uid) return;
-    console.log("currUser:", currentUser.uid);
+      if (!currentUser?.uid) return;
+      console.log("currUser:", currentUser.uid);
       try {
         const res = await axios.get(`http://localhost:8000/messages/getunreadcount/${currentUser.uid}`);
         console.log("Unread count:", res);
@@ -20,10 +22,12 @@ const ClientDashboard = () => {
       } catch (error) {
         console.error("Error fetching unread count", error);
       }
-    //
+      //
     }
-     fetchUnreadCount();
-  },[currentUser])
+    fetchUnreadCount();
+  }, [currentUser]);
+
+
     return (
         <div className="dashboard-container">
 
@@ -43,7 +47,9 @@ const ClientDashboard = () => {
         {/* // logic if=f no message do not show if messages >0 than show how many messages pending to see */}
         <Link to="/messages" className="nav-link">Messages {unreadCount > 0 && (<span className="unreadCount">{unreadCount}</span>)} </Link>
         <Link to="/my-projects" className="nav-link">My Projects</Link>
-        <Link to="/my-projects" className="nav-link">Find Freelancers</Link>
+          <Link to="/my-projects" className="nav-link">Find Freelancers</Link>
+          {/* ///////////////////////////////// */}
+        <Link to="/myproposals" className="nav-link">my proposals</Link>
       </nav>
 
       {/* Body */}

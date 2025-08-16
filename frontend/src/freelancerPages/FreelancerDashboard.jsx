@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { auth } from '../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import './FreelancerDashboard.css'
+import './FreelancerDashboard.css';
+
 function FreelancerDashboard() {
   const [firebaseUID, setFirebaseUID] = useState("");
 
