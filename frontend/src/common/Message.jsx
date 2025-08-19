@@ -18,7 +18,7 @@ const Message = () => {
         console.log(res);
         setConversations(res.data);
       })
-      .catch(err => {
+      .catch(err => { 
         console.error('Failed to fetch messages:', err);
       });
   }, [currentUser]);
@@ -31,16 +31,24 @@ const Message = () => {
         <p>No messages yet.</p>
       ) : (
         <div className="message-cards">
-          {conversations.map((chatUser, index) => (
-            <Link to={`/chat/${chatUser._id}`} key={index} className="message-card">
-              <div>
-                <h4>{chatUser.name}</h4>
-                <p>{chatUser.email}</p>
-                <small>Last message: {chatUser.lastMessage || 'No messages yet'}</small>
-              </div>
-            </Link>
-          ))}
-        </div>
+  {conversations.map((chatUser, index) => (
+    <Link to={`/chat/${chatUser._id}`} key={index} className="message-card">
+      <div>
+        <h4>{chatUser.name}</h4>
+        <p>{chatUser.email}</p>
+        <small>
+          Last message: {chatUser.lastMessage || 'No messages yet'}
+        </small>
+        {chatUser.lastMessageTime && (
+          <small className="time">
+            {new Date(chatUser.lastMessageTime).toLocaleString()}
+          </small>
+        )}
+      </div>
+    </Link>
+  ))}
+</div>
+
       )}
     </div>
   );

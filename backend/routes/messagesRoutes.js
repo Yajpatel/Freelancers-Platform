@@ -7,24 +7,41 @@ const User = require('../models/User');
 router.get('/getMessages/:userId', async (req, res) => {
   const { userId } = req.params;
 
+  // Find the Mongo User by firebaseUID
   const user = await User.findOne({ firebaseUID: userId });
-if (!user) return res.status(404).json({ message: 'User not found' });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
   try {
     // Get all messages where current user is sender or receiver
     const messages = await Message.find({
       $or: [{ sender: user._id }, { receiver: user._id }]
-    });
+    }).sort({ timestamp: -1 });
 
     const uniqueUserIds = new Set();
+    const lastMessageMap = {};
 
-    // Collect unique other users from messages
+    // Collect unique other users + last message
     messages.forEach((msg) => {
-      const otherUserId = msg.sender.toString() === userId ? msg.receiver.toString() : msg.sender.toString();
+      const otherUserId = msg.sender.toString() === user._id.toString()
+        ? msg.receiver.toString()
+        : msg.sender.toString();
+
+      if (!lastMessageMap[otherUserId]) {
+        lastMessageMap[otherUserId] = msg.content; // save last message text
+      }
       uniqueUserIds.add(otherUserId);
     });
 
     // Fetch details of those users
-    const users = await User.find({ _id: { $in: Array.from(uniqueUserIds) } }).select('_id name email').lean();
+    let users = await User.find({ _id: { $in: Array.from(uniqueUserIds) } })
+      .select('_id name email')
+      .lean();
+
+    // Attach last message for UI
+    users = users.map(u => ({
+      ...u,
+      lastMessage: lastMessageMap[u._id.toString()] || ""
+    }));
 
     res.json(users);
   } catch (error) {
@@ -32,6 +49,8 @@ if (!user) return res.status(404).json({ message: 'User not found' });
     res.status(500).json({ message: 'Failed to fetch chat users' });
   }
 });
+
+
 
 
 /////
@@ -64,6 +83,7 @@ router.get('/getConversation/:user1/:user2', async (req, res) => {
 
   try {
     const messages = await Message.find({ roomid }).sort({ timestamp: 1 });  // Old ➔ New
+    console.log("messaes  = "+messages)
     res.json(messages);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch messages' });

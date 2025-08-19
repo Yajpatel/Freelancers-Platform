@@ -9,6 +9,7 @@ const socket = io('http://localhost:8000');  // Connects automatically when page
 
 const Chat = () => {
   const { id } = useParams(); //mongodb id of the user (oppposite user)with whom we will be chatting with (not current user id) default generated user_id
+
   const [userToChatWith, setUserToChatWith] = useState({});
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -38,6 +39,40 @@ const Chat = () => {
   }, [currentUser]);
 
   useEffect(() => {
+  if (!roomId) return;
+
+  // Step 1: join socket room
+  socket.emit('joinRoom', { roomId });
+  console.log(`Socket ${socket.id} joined room ${roomId}`);
+
+  // Step 2: fetch previous conversation from DB
+  const fetchMessages = async () => {
+    try {
+      const res = await axios.get(
+   `http://localhost:8000/messages/getConversation/${currentUserFirebaseId}/${userToChatWith.firebaseUID}` );
+      setMessages(res.data);
+      console.log("Fetched old messages:", res.data);
+    } catch (err) {
+      console.error("Failed to fetch conversation:", err);
+    }
+  };
+
+  if (currentuserdetails?._id && userToChatWith?._id) {
+    fetchMessages();
+  }
+
+  // Step 3: listen for new socket messages
+  socket.on('receiveMessage', (data) => {
+    setMessages((prev) => [...prev, data]);
+  });
+
+  return () => {
+    socket.off('receiveMessage');
+  };
+}, [roomId, currentuserdetails, userToChatWith]);
+
+
+  useEffect(() => {
     if (!id || !currentUserFirebaseId) return;
 
     console.log("currUser:", currentUser);
@@ -50,26 +85,13 @@ const Chat = () => {
         console.log("otherFirebaseUID",otherFirebaseUID)
         console.log("currentUserFirebaseId",currentUserFirebaseId)
         const generatedRoomId = [currentUserFirebaseId, otherFirebaseUID].sort().join('-');
-        console.log("generatedRoomId : ",generatedRoomId);
+        console.log("generatedRoomId : ", generatedRoomId);
+        
         setRoomId(generatedRoomId);
       })
       .catch((err) => console.log(err));
   }, [id,currentUserFirebaseId]);
 
-  useEffect(() => { 
-     if (!roomId) return;
-
-    socket.emit('joinRoom', { roomId });
-    console.log(`Socket ${socket.id} joined room ${roomId}`);
-
-    socket.on('receiveMessage', (data) => {
-      setMessages(prev => [...prev, data]);
-    });
-
-    return () => {
-      socket.off('receiveMessage');
-    };
-  }, [roomId]);
 
   /// on send button 
   const handleSendMessage = () => {

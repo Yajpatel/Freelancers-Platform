@@ -1,18 +1,81 @@
-/* FreelancerProfile.css */
-
-.profile-container {
-  max-width: 64rem; /* same as max-w-5xl */
-  margin: 0 auto;
-  padding: 1.5rem;
+/* === ROOT VARIABLES (Light Theme) === */
+:root {
+  --bg-primary: #f5f6fa;
+  --bg-secondary: #ffffff;
+  --border-color: #e0e0e0;
+  --text-primary: #222;
+  --text-secondary: #555;
+  --accent-primary: #0d6efd;
+  --accent-hover: #0b5ed7;
+  --success: #28a745;
+  --danger: #dc3545;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --transition-fast: 0.2s ease-in-out;
 }
 
-.profile-card {
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
+/* === BASE & LAYOUT === */
+body {
+  background-color: var(--bg-primary);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
 }
 
+.profile-page-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 992px) {
+  .profile-page-container {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.profile-main,
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* === CARDS & SECTIONS === */
+.profile-card,
+.profile-section,
+.sidebar-section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.profile-card:hover,
+.profile-section:hover,
+.sidebar-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* === HEADER-SPECIFIC STYLES === */
 .profile-header {
   display: flex;
   align-items: center;
@@ -20,62 +83,52 @@
 }
 
 .profile-image {
-  width: 6rem;
-  height: 6rem;
-  border-radius: 9999px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #ccc;
+  border: 4px solid var(--accent-primary);
+  transition: transform var(--transition-fast);
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
 }
 
 .profile-info h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
+  margin: 0 0 0.25rem;
+  font-size: 2rem;
+  color: var(--text-primary);
 }
 
-.profile-info p {
-  margin: 0.25rem 0;
+.profile-info .email,
+.profile-info .location {
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
-.profile-rating {
+/* === SECTIONS === */
+.section-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  color: #facc15; /* Tailwind yellow-500 */
-  margin-top: 0.25rem;
-}
-
-.profile-rating span {
-  color: #4b5563; /* Tailwind gray-600 */
-  margin-left: 0.5rem;
-}
-
-.edit-btn {
-  margin-left: auto;
-  background-color: #2563eb; /* Tailwind blue-600 */
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.edit-btn:hover {
-  background-color: #1d4ed8; /* Tailwind blue-700 */
-}
-
-.section {
-  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
 }
 
 .section-title {
+  color: var(--text-primary);
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin: 0;
 }
 
-.section-text {
-  color: #374151; /* Tailwind gray-700 */
+.section-content p {
+  color: var(--text-secondary);
 }
 
+/* === SKILLS & LIST ITEMS === */
 .skills-list {
   display: flex;
   flex-wrap: wrap;
@@ -83,39 +136,227 @@
 }
 
 .skill-badge {
-  background-color: #dbeafe; /* Tailwind blue-100 */
-  color: #1d4ed8; /* Tailwind blue-700 */
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
+  background-color: #e9f0ff;
+  color: var(--accent-primary);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
   font-size: 0.875rem;
-}
-
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.portfolio-card {
-  border: 1px solid #e5e7eb; /* Tailwind gray-200 */
-  border-radius: 0.5rem;
-  overflow: hidden;
-  transition: box-shadow 0.2s ease;
-  text-decoration: none;
-}
-
-.portfolio-card:hover {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.portfolio-image {
-  width: 100%;
-  height: 10rem;
-  object-fit: cover;
-}
-
-.portfolio-title {
-  padding: 0.5rem;
   font-weight: 500;
-  text-align: center;
+  transition: transform var(--transition-fast);
+}
+
+.skill-badge:hover {
+  transform: scale(1.05);
+}
+
+.list-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* === FORMS & BUTTONS === */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 0.65rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-secondary {
+  background-color: #f1f3f5;
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background-color: #e2e6ea;
+}
+
+.btn-icon {
+  background: none;
+  color: var(--text-secondary);
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+.btn-icon:hover {
+  background-color: #e9ecef;
+  color: var(--text-primary);
+}
+
+.btn-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.chat-btn {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  background-color: #198754;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.chat-btn:hover {
+  background-color: #157347;
+}
+
+/* === SIDEBAR SPECIFIC === */
+.verification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 2;
+}
+
+.payment-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* ---------------------------
+   Form Container
+---------------------------- */
+.experience-form-item,
+.education-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Input Fields */
+.experience-form-item input,
+.education-form-item input,
+.experience-form-item textarea,
+.education-form-item textarea {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Textarea Specific */
+.experience-form-item textarea,
+.education-form-item textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Add/Remove Buttons */
+.experience-form-item button,
+.education-form-item button {
+  align-self: flex-start;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.2s;
+}
+
+.experience-form-item button:hover,
+.education-form-item button:hover {
+  opacity: 0.9;
+}
+
+/* Remove Button Styling */
+.experience-form-item button,
+.education-form-item button.remove-btn {
+  background-color: #ff4d4f;
+  color: #fff;
+}
+
+/* Add Button Styling */
+button.add-btn {
+  background-color: #1890ff;
+  color: #fff;
+  margin-top: 10px;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button.add-btn:hover {
+  background-color: #40a9ff;
+}
+
+/* Form Labels (Optional) */
+.experience-form-item label,
+.education-form-item label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #555;
+}
+
+/* Form Sections Spacing */
+.profile-section .section-content {
+  margin-top: 10px;
 }

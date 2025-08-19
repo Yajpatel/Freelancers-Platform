@@ -1,224 +1,238 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const { faker } = require('@faker-js/faker'); // For generating realistic-looking data
+const { faker } = require('@faker-js/faker');
 
-dotenv.config(); // Load environment variables from .env file
+// Load environment variables
+dotenv.config();
 
 // --- 1. Import Mongoose Models ---
-// Adjust these paths to where your models are actually located
-const User = require('../models/User'); // e.g., './models/User' or '../models/User'
+// Make sure the paths to your models are correct
+const User = require('../models/User');
 const Project = require('../models/Project');
 const Proposal = require('../models/Proposal');
+const Payment = require('../models/Payment');
 const Review = require('../models/Review');
 const Message = require('../models/Message');
 
 // --- 2. Database Connection ---
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/freelance_db_dummy';
 
-mongoose.connect(MONGO_URI)
-  .then(async () => {
+const seedDatabase = async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
     console.log('✅ Connected to MongoDB');
 
-    // Clear previous data
+    // --- Optional: Clear previous data ---
     console.log('🗑️ Clearing existing data...');
     await Promise.all([
-      User.deleteMany({}),
-      Project.deleteMany({}),
-      Proposal.deleteMany({}),
-      Review.deleteMany({}),
-      Message.deleteMany({})
+      User.deleteMany({}), Project.deleteMany({}), Proposal.deleteMany({}),
+      Payment.deleteMany({}), Review.deleteMany({}), Message.deleteMany({})
     ]);
-    console.log('🗑️ Cleared existing data.');
+    console.log('🗑️ Data cleared successfully.');
 
     // --- Data Definitions ---
-    const commonSkills = [
-      'React', 'Node.js', 'MongoDB', 'Express.js', 'JavaScript', 'Python', 'Django', 'Flask',
-      'Java', 'Spring Boot', 'C++', 'PHP', 'Laravel', 'Vue.js', 'Angular', 'AWS', 'Azure',
-      'GCP', 'Docker', 'Kubernetes', 'UI/UX Design', 'Graphic Design', 'Content Writing',
-      'SEO', 'Digital Marketing', 'Mobile App Development', 'Data Science', 'Machine Learning',
-      'TypeScript', 'HTML', 'CSS', 'SQL', 'NoSQL', 'RESTful APIs', 'GraphQL', 'Redux', 'Vuex'
-    ];
-    const projectCategories = [
-      'Web Development', 'Mobile App Development', 'UI/UX Design', 'Graphic Design',
-      'Content Writing', 'Digital Marketing', 'Data Science', 'Game Development',
-      'Video Editing', 'Backend Development', 'Frontend Development'
-    ];
+    const commonSkills = ['React', 'Node.js', 'MongoDB', 'JavaScript', 'Python', 'Django', 'Vue.js', 'Angular', 'AWS', 'Docker', 'UI/UX Design', 'Figma', 'Graphic Design', 'Content Writing', 'SEO', 'Digital Marketing', 'Mobile App Development', 'TypeScript', 'HTML/CSS', 'SQL', 'GraphQL'];
+    const projectCategories = ['Web Development', 'Mobile App Development', 'UI/UX Design', 'Graphic Design', 'Content Writing', 'Digital Marketing', 'Data Science', 'Backend Development'];
 
-    // --- 3. Seed Users (15-20 users) ---
+    // --- 3. Seed Users ---
+    console.log('🌱 Seeding Users...');
     const usersToInsert = [];
-    const numberOfUsers = faker.number.int({ min: 15, max: 20 });
-
+    const numberOfUsers = 25; // Create a decent number of users
     for (let i = 0; i < numberOfUsers; i++) {
       const firstName = faker.person.firstName();
       const lastName = faker.person.lastName();
-      const userRoles = faker.helpers.arrayElements(['client', 'freelancer'], { min: 1, max: 2 }); // Each user is at least one role, possibly both
-
+      // Ensure every user can be both a client and a freelancer for maximum flexibility
+      const userRoles = ['client', 'freelancer'];
       usersToInsert.push({
         name: `${firstName} ${lastName}`,
         email: faker.internet.email({ firstName, lastName }).toLowerCase(),
-        firebaseUID: faker.string.uuid(),
+        firebaseUID: `firebase_uid_${faker.string.uuid()}`,
         bio: faker.person.bio(),
         profileImage: faker.image.avatar(),
-        skills: faker.helpers.arrayElements(commonSkills, { min: 3, max: 7 }), // Varied skills
-        rating: faker.number.float({ min: 3, max: 5, precision: 0.1 }), // Rating between 3.0 and 5.0
+        skills: faker.helpers.arrayElements(commonSkills, { min: 3, max: 8 }),
         roles: userRoles,
-        currentRole: faker.helpers.arrayElement(userRoles), // Pick one of their roles as current
-        createdAt: faker.date.past({ years: 2 })
+        currentRole: faker.helpers.arrayElement(userRoles),
+        verification: { // Add some verification data
+            emailVerified: true,
+            phoneVerified: faker.datatype.boolean(0.8),
+            idVerified: faker.datatype.boolean(0.6)
+        }
       });
     }
     const insertedUsers = await User.insertMany(usersToInsert);
     console.log(`✅ ${insertedUsers.length} Users seeded.`);
+    
+    // All users can be clients or freelancers
+    const clients = insertedUsers;
+    const freelancers = insertedUsers;
 
-    // Separate clients and freelancers based on their assigned roles
-    const clients = insertedUsers.filter(user => user.roles.includes('client'));
-    const freelancers = insertedUsers.filter(user => user.roles.includes('freelancer'));
-
-    // --- 4. Seed Projects (varied number) ---
+    // --- 4. Seed Projects ---
+    console.log('🌱 Seeding Projects...');
     const projectsToInsert = [];
     for (const client of clients) {
-      const numProjectsForThisClient = faker.number.int({ min: 0, max: 4 }); // Each client posts 0 to 4 projects
-      if (numProjectsForThisClient === 0 && faker.datatype.boolean(0.6)) continue; // 60% chance to skip if 0 projects
-
-      for (let i = 0; i < numProjectsForThisClient; i++) {
-        const status = faker.helpers.arrayElement(['open', 'in-progress', 'completed']);
-        let assignedFreelancer = null;
-
-        if (status !== 'open' && freelancers.length > 0) {
-          // Try to assign a freelancer who is not the client
-          const eligibleFreelancers = freelancers.filter(f => f._id.toString() !== client._id.toString());
-          if (eligibleFreelancers.length > 0) {
-            assignedFreelancer = faker.helpers.arrayElement(eligibleFreelancers);
-          }
-        }
-
+      const numProjects = faker.number.int({ min: 1, max: 3 });
+      for (let i = 0; i < numProjects; i++) {
         projectsToInsert.push({
-          title: faker.lorem.words({ min: 4, max: 9 }),
-          description: faker.lorem.paragraph({ min: 3, max: 7 }),
+          title: faker.commerce.productName() + " Project",
+          description: faker.lorem.paragraphs({ min: 2, max: 4 }),
           category: faker.helpers.arrayElement(projectCategories),
-          budget: faker.number.int({ min: 500, max: 15000 }),
+          budget: faker.number.int({ min: 5000, max: 50000 }),
           deadline: faker.date.soon({ days: 90 }),
-          status: status,
+          status: 'open',
           client: client._id,
-          assignedFreelancer: assignedFreelancer ? assignedFreelancer._id : null,
-          createdAt: faker.date.past({ years: 1 })
         });
       }
     }
     const insertedProjects = await Project.insertMany(projectsToInsert);
     console.log(`✅ ${insertedProjects.length} Projects seeded.`);
 
-    // --- Update User's postedProjects and takenProjects ---
-    console.log('🔄 Updating user project lists...');
-    for (const project of insertedProjects) {
-      await User.findByIdAndUpdate(project.client, { $push: { postedProjects: project._id } });
-      if (project.assignedFreelancer) {
-        await User.findByIdAndUpdate(project.assignedFreelancer, { $push: { takenProjects: project._id } });
-      }
-    }
-    console.log('✅ Updated user project lists.');
-
     // --- 5. Seed Proposals ---
+    console.log('🌱 Seeding Proposals...');
     const proposalsToInsert = [];
-    const maxProposalsPerProject = 5;
-
     for (const project of insertedProjects) {
-      const numProposalsForThisProject = faker.number.int({ min: 0, max: maxProposalsPerProject });
-      const potentialProposers = freelancers.filter(f => f._id.toString() !== project.client.toString()); // Freelancer can't propose on their own project
+      const numProposals = faker.number.int({ min: 2, max: 6 });
+      // Ensure a freelancer doesn't bid on their own project
+      const potentialProposers = freelancers.filter(f => !f._id.equals(project.client));
+      if (potentialProposers.length === 0) continue;
+      
+      const proposers = faker.helpers.arrayElements(potentialProposers, { min: 1, max: Math.min(numProposals, potentialProposers.length) });
 
-      const selectedProposers = faker.helpers.arrayElements(potentialProposers, { count: numProposalsForThisProject });
-
-      for (const proposer of selectedProposers) {
-        // Avoid duplicate proposals from the same freelancer on the same project
-        const existingProposal = proposalsToInsert.find(p => p.freelancer.equals(proposer._id) && p.project.equals(project._id));
-        if (existingProposal) continue;
-
+      for (const proposer of proposers) {
         proposalsToInsert.push({
           freelancer: proposer._id,
+          client: project.client,      // <-- FIX: Added the required client ID
           project: project._id,
           coverLetter: faker.lorem.paragraph({ min: 2, max: 4 }),
-          biddingAmount: faker.number.int({ min: project.budget * 0.4, max: project.budget * 1.1 }),
-          deliveryTime: faker.number.int({ min: 1, max: 30 }), // in days, matches schema
-          status: faker.helpers.arrayElement(['pending', 'accepted', 'rejected']),
-          createdAt: faker.date.recent({ days: 30 })
+          totalBidAmount: faker.number.int({ min: project.budget * 0.85, max: project.budget * 1.25 }),
+          deliveryTime: faker.number.int({ min: 7, max: 60 }),
+          status: 'pending',
+          // <-- FIX: Removed non-existent paymentMilestones
         });
       }
     }
     const insertedProposals = await Proposal.insertMany(proposalsToInsert);
     console.log(`✅ ${insertedProposals.length} Proposals seeded.`);
 
-    // --- Update Project's proposals list ---
-    console.log('🔄 Updating project proposal lists...');
-    for (const proposal of insertedProposals) {
-      await Project.findByIdAndUpdate(proposal.project, { $push: { proposals: proposal._id } });
-    }
-    console.log('✅ Updated project proposal lists.');
+    // --- 6. Process Proposals and Update Projects ---
+    console.log('🔄 Processing proposals and updating projects...');
+    const acceptedProposals = [];
+    for (const project of insertedProjects) {
+      const projectProposals = insertedProposals.filter(p => p.project.equals(project._id));
+      if (projectProposals.length === 0) continue;
+      
+      // 80% chance to move a project forward
+      if (faker.datatype.boolean(0.8)) { 
+        const proposalToAccept = faker.helpers.arrayElement(projectProposals);
+        
+        // Update proposal status
+        proposalToAccept.status = faker.helpers.arrayElement(['accepted', 'in-progress', 'submitted', 'completed']); // More varied statuses
+        await Proposal.findByIdAndUpdate(proposalToAccept._id, { status: proposalToAccept.status });
+        acceptedProposals.push(proposalToAccept);
 
-    // --- 6. Seed Reviews ---
-    const reviewsToInsert = [];
-    // Focus reviews on completed projects with assigned freelancers
-    const completedProjectsWithFreelancers = insertedProjects.filter(p => p.status === 'completed' && p.assignedFreelancer);
-
-    for (const project of completedProjectsWithFreelancers) {
-      if (project.client && project.assignedFreelancer) {
-        // Client reviews freelancer
-        reviewsToInsert.push({
-          reviewer: project.client._id,
-          reviewee: project.assignedFreelancer._id,
-          rating: faker.number.int({ min: 4, max: 5 }), // High rating for completed work
-          comment: faker.lorem.sentence({ min: 8, max: 15 }),
-          project: project._id,
-          createdAt: faker.date.recent({ days: 60 })
-        });
-
-        // Freelancer reviews client (optional, but good for a complete system)
-        reviewsToInsert.push({
-          reviewer: project.assignedFreelancer._id,
-          reviewee: project.client._id,
-          rating: faker.number.int({ min: 3, max: 5 }),
-          comment: faker.lorem.sentence({ min: 8, max: 15 }),
-          project: project._id,
-          createdAt: faker.date.recent({ days: 60 })
-        });
+        // Update other proposals to 'rejected'
+        const otherProposals = projectProposals.filter(p => !p._id.equals(proposalToAccept._id));
+        await Proposal.updateMany({ _id: { $in: otherProposals.map(p => p._id) }}, { status: 'rejected' });
+        
+        // Update project status and assign freelancer
+        let projectStatus = 'in-progress';
+        if (['submitted', 'completed'].includes(proposalToAccept.status)) {
+            projectStatus = 'completed';
+        }
+        project.assignedFreelancer = proposalToAccept.freelancer;
+        project.status = projectStatus;
+        await project.save();
       }
+    }
+    console.log(`✅ ${acceptedProposals.length} proposals processed and projects updated.`);
+
+    // --- 7. Seed Payments ---
+    console.log('🌱 Seeding Payments...');
+    const paymentsToInsert = [];
+    for (const proposal of acceptedProposals) {
+        // Find the updated project document
+        const project = await Project.findById(proposal.project);
+        if (!project || project.status === 'open') continue;
+
+        let status = 'initiated';
+        let releasedAt = null;
+
+        if (project.status === 'completed') {
+            status = 'released';
+            releasedAt = faker.date.past({ years: 1, refDate: project.deadline });
+        } else if (project.status === 'in-progress') {
+            status = 'in_escrow';
+        }
+
+        paymentsToInsert.push({
+            proposal: proposal._id,
+            project: project._id,
+            client: proposal.client,
+            freelancer: proposal.freelancer,
+            amount: proposal.totalBidAmount,
+            status: status,
+            method: faker.helpers.arrayElement(['razorpay', 'stripe', 'wallet']),
+            transactionId: `txn_${faker.string.alphanumeric(16)}`,
+            releasedAt: releasedAt
+        });
+    }
+    const insertedPayments = await Payment.insertMany(paymentsToInsert);
+    console.log(`✅ ${insertedPayments.length} Payments seeded.`);
+
+    // --- 8. Seed Reviews ---
+    console.log('🌱 Seeding Reviews...');
+    const reviewsToInsert = [];
+    const completedProjects = await Project.find({ status: 'completed', assignedFreelancer: { $ne: null } });
+    for (const project of completedProjects) {
+        // Client reviews Freelancer
+        reviewsToInsert.push({ reviewer: project.client, reviewee: project.assignedFreelancer, rating: faker.number.int({ min: 4, max: 5 }), comment: faker.lorem.sentence(), project: project._id });
+        // Freelancer reviews Client
+        reviewsToInsert.push({ reviewer: project.assignedFreelancer, reviewee: project.client, rating: faker.number.int({ min: 4, max: 5 }), comment: faker.lorem.sentence(), project: project._id });
     }
     const insertedReviews = await Review.insertMany(reviewsToInsert);
     console.log(`✅ ${insertedReviews.length} Reviews seeded.`);
 
-    // --- Update User's reviews list ---
-    console.log('🔄 Updating user review lists...');
-    for (const review of insertedReviews) {
-      await User.findByIdAndUpdate(review.reviewee, { $push: { reviews: review._id } });
-    }
-    console.log('✅ Updated user review lists.');
-
-    // --- 7. Seed Messages ---
+    // --- 9. Seed Messages ---
+    console.log('🌱 Seeding Messages...');
     const messagesToInsert = [];
-    const numberOfMessages = faker.number.int({ min: 20, max: 50 });
-
-    for (let i = 0; i < numberOfMessages; i++) {
-      const sender = faker.helpers.arrayElement(insertedUsers);
-      const receiver = faker.helpers.arrayElement(insertedUsers.filter(u => u._id.toString() !== sender._id.toString()));
-
-      // Ensure roomid is consistent regardless of sender/receiver order
-        const roomID = [sender._id.toString(), receiver._id.toString()].sort().join('-');
-
-      messagesToInsert.push({
-        roomid: roomID,
-        sender: sender._id,
-        receiver: receiver._id,
-        content: faker.lorem.sentence({ min: 5, max: 20 }),
-        timestamp: faker.date.recent({ days: 90 }),
-        seen: faker.datatype.boolean(0.7) // 70% chance of being seen
-      });
+    const activeProjects = await Project.find({ status: { $in: ['in-progress', 'completed'] }, assignedFreelancer: { $ne: null }});
+    for (const project of activeProjects) {
+        const roomId = [project.client.toString(), project.assignedFreelancer.toString()].sort().join('_');
+        for (let i = 0; i < faker.number.int({ min: 5, max: 15 }); i++) {
+            const [sender, receiver] = faker.helpers.arrayElement([[project.client, project.assignedFreelancer], [project.assignedFreelancer, project.client]]);
+            messagesToInsert.push({ roomid: roomId, sender, receiver, content: faker.lorem.sentence(), seen: faker.datatype.boolean(0.9) });
+        }
     }
     const insertedMessages = await Message.insertMany(messagesToInsert);
     console.log(`✅ ${insertedMessages.length} Messages seeded.`);
+    
+    // --- 10. Final Update of User/Project Arrays ---
+    console.log('🔄 Finalizing relationships...');
+    // A more efficient way to gather all IDs
+    const allProjectsFromDB = await Project.find().lean();
+    const allProposalsFromDB = await Proposal.find().lean();
+    const allReviewsFromDB = await Review.find().lean();
 
+    for (const user of insertedUsers) {
+        const postedProjects = allProjectsFromDB.filter(p => p.client.equals(user._id)).map(p => p._id);
+        const takenProjects = allProjectsFromDB.filter(p => p.assignedFreelancer && p.assignedFreelancer.equals(user._id)).map(p => p._id);
+        const reviews = allReviewsFromDB.filter(r => r.reviewee.equals(user._id)).map(r => r._id);
+        
+        await User.findByIdAndUpdate(user._id, { postedProjects, takenProjects, reviews });
+    }
 
-    console.log('\n🌱 All data seeded successfully!');
-    mongoose.disconnect();
-  })
-  .catch(err => {
-    console.error('❌ Error seeding data:', err);
-    mongoose.disconnect();
-  });
+    for (const project of insertedProjects) {
+        const proposals = allProposalsFromDB.filter(p => p.project.equals(project._id)).map(p => p._id);
+        await Project.findByIdAndUpdate(project._id, { proposals });
+    }
+    console.log('✅ Relationships finalized.');
+    console.log('\n✨ Database seeding completed successfully! ✨');
+
+  } catch (error) {
+    console.error('❌ Error seeding data:', error);
+  } finally {
+    await mongoose.disconnect();
+    console.log('🔌 Disconnected from MongoDB.');
+  }
+};
+
+seedDatabase();

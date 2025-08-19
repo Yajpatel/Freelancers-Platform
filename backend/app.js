@@ -3,10 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 // const app = express();
+const Razorpay = require('razorpay'); //  1. Import Razorpay
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const messageRoutes = require('./routes/messagesRoutes')
+const paymentRoutes = require('./routes/paymentroutes')
 
 const Message = require('./models/Message')
 // const { createServer } = require('node:http'); // same thing const http = require('http');
@@ -15,6 +17,10 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 const app = express();
+
+
+
+
 const server = http.createServer(app);
 const io = new Server(server,{
   cors: {
@@ -60,8 +66,7 @@ const PORT = process.env.PORT || 8000;
 // Connect to DB
 connectDB();
 // just i am checking that is env working or not///
-console.log(process.env.PORT);
-console.log(process.env.MONGO_URI);
+
 
 
 /// 
@@ -87,6 +92,7 @@ app.get('/health',(req,res)=>{
 app.use('/freelancer/users', userRoutes);
 app.use('/project',projectRoutes);
 app.use('/messages', messageRoutes);
+app.use('/payment', paymentRoutes);
 
 // default port i gave in env is 8000
 server.listen(PORT,()=>{
