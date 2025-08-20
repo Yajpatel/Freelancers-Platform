@@ -1,0 +1,138 @@
+/* Using a consistent container style */
+.transactions-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.transactions-header {
+    margin-bottom: 2rem;
+}
+
+.transactions-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+/* Reusing tab styles from ClientProjectPage.css */
+.tabs-nav {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    /* Allow tabs to wrap on smaller screens */
+}
+
+.tab-link {
+    padding: 0.8rem 0.5rem;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #718096;
+    cursor: pointer;
+    text-transform: capitalize;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.tab-link:hover {
+    color: #2d3748;
+}
+
+.tab-link.active {
+    color: #4299e1;
+    font-weight: 600;
+    border-bottom-color: #4299e1;
+}
+
+/* Transaction List & Card Styling */
+.transactions-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* A single column list is better for transaction history */
+    gap: 1rem;
+}
+
+.transaction-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card-header-txn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.project-title-txn {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #2d3748;
+}
+
+.card-body-txn p {
+    margin: 0 0 0.5rem;
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+.card-body-txn p:last-child {
+    margin-bottom: 0;
+}
+
+/* Status Tags for Transactions */
+.status-tag-txn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: capitalize;
+}
+
+.status-in_escrow {
+    background-color: #fffaf0;
+    color: #dd6b20;
+}
+
+/* Orange */
+.status-released {
+    background-color: #f0fff4;
+    color: #38a169;
+}
+
+/* Green */
+.status-initiated {
+    background-color: #ebf8ff;
+    color: #3182ce;
+}
+
+/* Blue */
+.status-refunded {
+    background-color: #f7fafc;
+    color: #718096;
+}
+
+/* Gray */
+.status-failed {
+    background-color: #fff5f5;
+    color: #c53030;
+}
+
+/* Red */
+
+.status-message {
+    text-align: center;
+    color: #718096;
+    padding: 2rem;
+    font-size: 1.1rem;
+}

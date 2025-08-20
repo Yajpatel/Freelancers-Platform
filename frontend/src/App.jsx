@@ -14,7 +14,11 @@ import FreelancerDashboard from './freelancerPages/FreelancerDashboard'
 import RoleProvider from './context/Rolecontext';
 import Message from './common/Message';
 import Proposalspage from './clientPages/Proposalspage';
-import MyProjectpage from './clientPages/MyProjectpage';
+import ClientProjectPage from './clientPages/ClientProjectPage';
+import FreelancerProjectPage from './freelancerPages/FreelancerProjectPage';
+import PostProjectPage from './clientPages/PostProjectPage';
+import ClientTransactionPage from './clientPages/ClientTransactionPage';
+import FreelancerTransactionsPage from './freelancerPages/FreelancerTransactionsPage';
 function App() {
   return (
     <>  
@@ -31,13 +35,17 @@ function App() {
         <Route path="/profile/:id" element={<ProfilePage />} />
         <Route path="/project/SearchProjects" element={<SearchProjects />} />
         <Route path="/project/projectdetails/:id" element={<Projectdetails />} />
-
-
+        
         <Route path="/chat/:id" element={<Chat/>}></Route>
         <Route path="/messages" element={<Message/>}></Route>
         <Route path="/myproposals" element={<Proposalspage/>}></Route>
-        <Route path="/my-projects" element={<MyProjectpage/>}></Route>
-
+        {/* <Route path="/my-projects" element={<MyProjectpage/>}></Route> */}
+        <Route path="/client/myprojects" element={<ClientProjectPage/>}></Route>
+        <Route path="/freelancer/myprojects" element={<FreelancerProjectPage/>}></Route>
+        <Route path="/postproject" element={<PostProjectPage/>}></Route>
+        <Route path="/freelancertransaction" element={<FreelancerTransactionsPage/>}></Route>
+        <Route path="/clienttransactions" element={<ClientTransactionPage/>}></Route>
+        
       </Routes>
       </RoleProvider>
     </Router>

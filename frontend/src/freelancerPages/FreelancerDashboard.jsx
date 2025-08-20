@@ -35,7 +35,8 @@ function FreelancerDashboard() {
         <Link to="/dashboard" className="nav-link">Home</Link>
         <Link to="/project/SearchProjects" className="nav-link">Find Projects</Link>
         <Link to="/messages" className="nav-link">Messages</Link>
-        <Link to="/my-projects" className="nav-link">My Projects</Link>
+        <Link to="/freelancer/myprojects" className="nav-link">My Projects</Link>
+        <Link to="/freelancertransaction" className="nav-link">Mytransactions</Link>
       </nav>
 
       {/* Body */}

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
 
 /* ===================== PAYMENT SCHEMA ===================== */
 const paymentSchema = new mongoose.Schema({
@@ -15,8 +15,7 @@ const paymentSchema = new mongoose.Schema({
   },
 
   method: { 
-    type: String, 
-    enum: ['razorpay', 'stripe', 'paypal', 'wallet'], 
+    type: String,
     default: 'razorpay' 
   },
 

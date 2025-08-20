@@ -1,0 +1,438 @@
+/* Container and Header */
+.my-projects-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.projects-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+/* Tab Navigation */
+.tabs-nav {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 2rem;
+}
+
+.tab-link {
+    padding: 0.8rem 0.5rem;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #718096;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.tab-link:hover {
+    color: #2d3748;
+}
+
+.tab-link.active {
+    color: #4299e1;
+    font-weight: 600;
+    border-bottom-color: #4299e1;
+}
+
+/* Projects List & Cards */
+.projects-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card-my {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header-my {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-header-my h3 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #2d3748;
+}
+
+.card-body-my {
+    flex-grow: 1;
+    /* Pushes footer to the bottom */
+}
+
+.card-body-my p {
+    margin: 0 0 0.5rem;
+    color: #4a5568;
+}
+
+.project-actions {
+    margin-top: 1rem;
+}
+
+.btn-view {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #4299e1;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-view:hover {
+    background-color: #3182ce;
+}
+
+/* Status Tags */
+.status-tag {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status-in-progress {
+    background-color: #ebf8ff;
+    color: #3182ce;
+}
+
+.status-pending-review {
+    background-color: #fffaf0;
+    color: #dd6b20;
+}
+
+.status-completed {
+    background-color: #f0fff4;
+    color: #38a169;
+}
+
+.status-cancelled {
+    background-color: #f7fafc;
+    color: #718096;
+}
+
+/* Message for loading/empty states */
+.status-message {
+    text-align: center;
+    color: #718096;
+    padding: 2rem;
+    font-size: 1.1rem;
+}
+/* (Keep all your existing styles) */
+
+/* === ADD THIS CSS FOR THE NEW BUTTON === */
+.btn-post-project {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: #3182ce;
+    /* Blue accent */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-post-project:hover {
+    background-color: #2b6cb0;
+    /* Darker blue on hover */
+    transform: translateY(-2px);
+}
+
+/* (Keep all your existing styles) */
+
+/* --- Add this new class for the 'open' status tag --- */
+.status-open {
+    background-color: #e6f7ff;
+    /* A light blue color */
+    color: #1890ff;
+}
+
+/* Status Tags */
+.status-tag {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status-in-progress {
+    background-color: #ebf8ff;
+    color: #3182ce;
+}
+
+.status-pending-review {
+    background-color: #fffaf0;
+    color: #dd6b20;
+}
+
+.status-completed {
+    background-color: #f0fff4;
+    color: #38a169;
+}
+
+.status-cancelled {
+    background-color: #f7fafc;
+    color: #718096;
+}
+
+/* (The rest of your CSS file remains the same) */
+
+/* //////////////////////////////////////////// */
+/* //////////////////////////////////////////// */
+/* //////////////////////////////////////////// */
+/* //////////////////////////////////////////// */
+/* Container and Header */
+
+
+.my-projects-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.projects-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.btn-post-project {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: #3182ce;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-post-project:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-2px);
+}
+
+/* Tab Navigation */
+.tabs-nav {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 2rem;
+}
+
+.tab-link {
+    padding: 0.8rem 0.5rem;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #718096;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.tab-link:hover {
+    color: #2d3748;
+}
+
+.tab-link.active {
+    color: #4299e1;
+    font-weight: 600;
+    border-bottom-color: #4299e1;
+}
+
+/* Projects List & Cards */
+.projects-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card-my {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header-my {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-header-my h3 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #2d3748;
+}
+
+.card-body-my {
+    flex-grow: 1;
+}
+
+.card-body-my p {
+    margin: 0 0 0.5rem;
+    color: #4a5568;
+}
+
+.project-actions {
+    margin-top: 1rem;
+}
+
+/* === UNIFIED BUTTON STYLES === */
+.project-actions-multi {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-view,
+.btn-action {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-view:hover,
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view {
+    background-color: #4299e1;
+    /* Blue for default view */
+    color: white;
+}
+
+.btn-view:hover {
+    background-color: #3182ce;
+}
+
+.btn-approve {
+    background-color: #38a169;
+    /* Green */
+    color: white;
+}
+
+.btn-approve:hover {
+    background-color: #2f855a;
+}
+
+.btn-revise {
+    background-color: #dd6b20;
+    /* Orange */
+    color: white;
+}
+
+.btn-revise:hover {
+    background-color: #c05621;
+}
+
+.btn-review {
+    background-color: #805ad5;
+    /* Purple */
+    color: white;
+}
+
+.btn-review:hover {
+    background-color: #6b46c1;
+}
+
+
+/* Status Tags */
+.status-tag {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status-in-progress {
+    background-color: #ebf8ff;
+    color: #3182ce;
+}
+
+.status-pending-review {
+    background-color: #fffaf0;
+    color: #dd6b20;
+}
+
+.status-completed {
+    background-color: #f0fff4;
+    color: #38a169;
+}
+
+.status-cancelled {
+    background-color: #f7fafc;
+    color: #718096;
+}
+
+/* Message for loading/empty states */
+.status-message {
+    text-align: center;
+    color: #718096;
+    padding: 2rem;
+    font-size: 1.1rem;
+}
+

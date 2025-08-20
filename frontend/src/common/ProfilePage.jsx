@@ -3,6 +3,7 @@
   import axios from "axios";
   import './ProfilePage.css'; // We will create this new CSS file
   import { useNavigate } from "react-router-dom";
+  import { doSignOut } from "../firebase/auth";
   // Helper component for cleaner code
   const ProfileSection = ({ title, sectionKey, isEditing, onEdit, onSave, onCancel, children }) => {
       return (
@@ -164,6 +165,17 @@
         }
       };
 
+    const handleLogout = async () => {
+        try {
+            await doSignOut();
+            // Optional: Clear any user-related data from local storage
+            localStorage.removeItem('userToken'); // Example if you store a token
+            console.log("User logged out successfully");
+            navigate('/'); // Redirect to login page after logout
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    }
       if (!user) return <div className="loading-container">Loading Profile...</div>;
 
       return (
@@ -436,7 +448,11 @@
                       </ul>
                   </div>
                   
-                  <button className="btn btn-primary chat-btn" onClick={() => navigate(`/chat/${user._id}`)}>Chat with {user.name.split(' ')[0]}</button>
+            <button className="btn btn-primary chat-btn" onClick={() => navigate(`/chat/${user._id}`)}>Chat with {user.name.split(' ')[0]}</button>
+            
+            <button className="btn btn-danger logout-btn" onClick={handleLogout}>
+        Logout
+    </button>
               </aside>
           </div>
       );

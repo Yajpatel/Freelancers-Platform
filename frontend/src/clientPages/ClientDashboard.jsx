@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/authcontext';
 import axios from 'axios';
 import './ClientDashboard.css'
+import CompletedProjects from './CompletedProjects';
 const ClientDashboard = () => {
   const { currentUser } = useAuth();
   const [unreadCount,setunreadCount] = useState(0);
@@ -33,7 +34,7 @@ const ClientDashboard = () => {
 
       {/* Top Navbar */}
       <nav className="top-navbar">
-        <div className="logo">Freelancer</div>
+        <div className="logo">client</div>
         <div className="top-nav-links">
           <Link to={`/profile/${currentUser.uid}`} className="nav-link">
             My Profile
@@ -43,13 +44,14 @@ const ClientDashboard = () => {
 
       {/* Second Navbar */}
       <nav className="main-navbar">
-        <Link to="/dashboard" className="nav-link">Home</Link>
+        {/* <Link to="/dashboard" className="nav-link">Home</Link> */}
         {/* // logic if=f no message do not show if messages >0 than show how many messages pending to see */}
         <Link to="/messages" className="nav-link">Messages {unreadCount > 0 && (<span className="unreadCount">{unreadCount}</span>)} </Link>
-        <Link to="/my-projects" className="nav-link">My Projects</Link>
+        <Link to="/client/myprojects" className="nav-link">My Projects</Link>
           <Link to="/my-projects" className="nav-link">Find Freelancers</Link>
           {/* ///////////////////////////////// */}
         <Link to="/myproposals" className="nav-link">my proposals</Link>
+        <Link to="/clienttransactions" className="nav-link">my transactions</Link>
       </nav>
 
       {/* Body */}
@@ -58,9 +60,7 @@ const ClientDashboard = () => {
         <p>Explore projects or connect with freelancers to get started.</p>
 
         <div className="card-container">
-          <div className="dashboard-card">Recent Projects done by freelancers</div>
-          <div className="dashboard-card">Top Freelancers</div>
-          {/* <div className="dashboard-card">Your Activity</div> */}
+          <CompletedProjects /> 
         </div>
       </div>
 
