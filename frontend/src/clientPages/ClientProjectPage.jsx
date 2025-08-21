@@ -16,6 +16,9 @@ function ClientProjectPage() {
       axios
         .get(`http://localhost:8000/project/clientprojectpage/${currentUser.uid}`)
         .then(res => {
+
+                    console.log('Projects data received on frontend:', res.data);
+
           setAllProjects(res.data);
           setLoading(false);
         })
@@ -45,13 +48,13 @@ function ClientProjectPage() {
     switch (project.status) {
       case 'open': // Action for open projects
         return (
-          <Link to={`/myproposals`} className="btn-view"> 
+          <Link to={`/details/${project._id}`} className="btn-view"> 
             View Proposals
           </Link>
         );
       case 'in-progress':
         return (
-          <Link to={`/project/projectdetails/${project._id}`} className="btn-view">
+          <Link to={`/details/${project._id}`} className="btn-view">
             View Details
           </Link>
         );
@@ -76,7 +79,7 @@ function ClientProjectPage() {
         return null;
       default:
         return (
-           <Link to={`/project/projectdetails/${project._id}`} className="btn-view">
+           <Link to={`/details/${project._id}`} className="btn-view">
             View Details
           </Link>
         );
@@ -96,7 +99,7 @@ function ClientProjectPage() {
     <div className="my-projects-container">
       <header className="projects-header">
         <h1>My Projects</h1>
-        <button className="btn-post-project" onClick={() => navigate('/post-project')}>
+        <button className="btn-post-project" onClick={() => navigate('/postproject')}>
           + Post New Project
         </button>
       </header>

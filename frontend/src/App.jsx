@@ -19,6 +19,7 @@ import FreelancerProjectPage from './freelancerPages/FreelancerProjectPage';
 import PostProjectPage from './clientPages/PostProjectPage';
 import ClientTransactionPage from './clientPages/ClientTransactionPage';
 import FreelancerTransactionsPage from './freelancerPages/FreelancerTransactionsPage';
+import DetailedProjectPage from './common/DetailedProjectPage';
 function App() {
   return (
     <>  
@@ -45,6 +46,7 @@ function App() {
         <Route path="/postproject" element={<PostProjectPage/>}></Route>
         <Route path="/freelancertransaction" element={<FreelancerTransactionsPage/>}></Route>
         <Route path="/clienttransactions" element={<ClientTransactionPage/>}></Route>
+          <Route path="/details/:projectId" element={<DetailedProjectPage />}></Route>
         
       </Routes>
       </RoleProvider>

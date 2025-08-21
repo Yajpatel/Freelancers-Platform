@@ -72,8 +72,8 @@ router.post("/verify-payment", async (req, res) => {
     await Project.findByIdAndUpdate(
       proposal.project._id,
       {
-        status: "in-progress", // Set status to in-progress on the first hire
-        $addToSet: { assignedFreelancers: proposal.freelancer._id }, // ✅ MODIFIED
+        status: "in-progress", // Set project as active
+        assignedFreelancer: proposal.freelancer._id, // ✅ assign single freelancer
       },
       { new: true }
     );
@@ -82,14 +82,6 @@ router.post("/verify-payment", async (req, res) => {
     proposal.status = "accepted";
     await proposal.save();
 
-    // 3) ✅ REMOVED: The block that rejects other proposals is now gone.
-    /*
-    // OLD LOGIC - DELETED
-    await Proposal.updateMany(
-      { project: proposal.project._id, _id: { $ne: proposal._id } },
-      { $set: { status: "rejected" } }
-    );
-    */
 
     // 4) Create Payment Record (NO CHANGE HERE)
     const total = Number(proposal.totalBidAmount);

@@ -46,8 +46,8 @@ const userSchema = new mongoose.Schema({
     },
     paypalEmail: String,
     upiId: String,
-    preferredMethod: { 
-      type: String, 
+    preferredMethod: {
+      type: String,
       enum: ['bank', 'paypal', 'upi'], 
       default: 'upi' 
     }

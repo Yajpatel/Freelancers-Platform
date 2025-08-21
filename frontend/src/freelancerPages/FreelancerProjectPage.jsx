@@ -14,6 +14,22 @@ function FreelancerProjectPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('active'); // Default to active work
 
+  const handleStatusUpdate = (projectId, newStatus) => {
+    axios
+      .put(`http://localhost:8000/project/${projectId}/status`, { status: newStatus })
+      .then(res => {
+        setData(prevData => ({
+          ...prevData,
+          activeProjects: prevData.activeProjects.filter(p => p._id !== projectId),
+        }));
+        alert('Project has been submitted for client review! Be patient');
+      })
+      .catch(err => {
+        console.error(`Failed to update project status to ${newStatus}:`, err);
+        alert('Could not update the project status. Please try again.');
+      });
+  };
+
   useEffect(() => {
     if (currentUser) {
       axios
@@ -53,11 +69,11 @@ function FreelancerProjectPage() {
                 <p><strong>Your Bid:</strong> ₹{p.totalBidAmount}</p>
                 <p><strong>Delivery Time:</strong> {p.deliveryTime} days</p>
             </div>
-            <div className="project-actions">
-                <Link to={`/project/projectdetails/${p.project?._id}`} className="btn-view">
-                  View Project
-                </Link>
-            </div>
+            {/* <div className="project-actions">
+                <Link to={`/details/${p._id}`} className="btn-view">
+                            View Projec
+                          </Link>
+            </div> */}
           </div>
         ));
 
@@ -68,17 +84,24 @@ function FreelancerProjectPage() {
           <div key={project._id} className="project-card-my">
              <div className="card-header-my">
                 <h3>{project.title}</h3>
-                <span className={`status-tag status-in-progress`}>In Progress</span>
+              <span className={`status-tag status-in-progress`}>In Progress</span>
+                <Link to={`/details/${project._id}`} className="btn-view-details">
+        View Details
+    </Link>
             </div>
              <div className="card-body-my">
                 <p><strong>Client:</strong> {project.client?.name || 'N/A'}</p>
                 <p><strong>Budget:</strong> ₹{project.budget}</p>
             </div>
-            <div className="project-actions">
-                <Link to={`/project/projectdetails/${project._id}`} className="btn-view">
-                  Manage Project
-                </Link>
-            </div>
+           <div className="project-actions">
+    
+    <button 
+        onClick={() => handleStatusUpdate(project._id, 'pending-review')} 
+        className="btn-complete-work"
+    >
+        Mark as Complete
+    </button>
+</div>
           </div>
         ));
 

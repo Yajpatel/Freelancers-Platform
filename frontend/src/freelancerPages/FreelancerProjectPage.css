@@ -1,3 +1,5 @@
+/* frontend/src/freelancerPages/FreelancerProjectPage.css */
+
 .my-projects-container {
     max-width: 900px;
     margin: 40px auto;
@@ -6,6 +8,7 @@
 
 .projects-list {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
 
@@ -14,4 +17,73 @@
     border-radius: 12px;
     padding: 25px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    
+    /* Key styles for the layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content-wrapper {
+    flex-grow: 1; /* Pushes the actions div to the bottom */
+}
+
+.card-header-my {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.card-header-my h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.header-right-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Aligns items to the right */
+    gap: 8px; /* Space between status and button */
+}
+
+.btn-view-details {
+    padding: 3px 10px;
+    font-size: 0.8rem;
+    background-color: #e0f2fe;
+    color: #0c4a6e;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-view-details:hover {
+    background-color: #bae6fd;
+}
+
+.project-actions {
+    margin-top: 1.5rem; /* Space above the button */
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.btn-complete-work {
+    width: 100%; /* Makes the button full-width */
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background-color: #38a169;
+    color: white;
+}
+
+.btn-complete-work:hover {
+    background-color: #2f855a;
 }

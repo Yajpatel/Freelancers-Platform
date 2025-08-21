@@ -366,4 +366,141 @@ router.post("/create", async (req, res) => {
   }
 });
 
+
+// --- NEW ROUTE: GET A SINGLE PROJECT WITH ALL DETAILS ---
+router.get("/details/:projectId", async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    const project = await Project.findById(projectId)
+      .populate("client", "name email profileImage") // Populate client details
+      .populate("assignedFreelancer", "name email profileImage") // Populate freelancer details
+      .populate({
+        path: "proposals",
+        populate: {
+          path: "freelancer",
+          select: "name email profileImage", // Get details of freelancers who proposed
+        },
+      });
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found." });
+    }
+
+    res.status(200).json(project);
+  } catch (error) {
+    console.error("Error fetching project details:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+
+// --- ✅ NEW ROUTE: Freelancer marks a project as ready for review ---
+router.put('/:projectId/statuspendingreview', async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const { status } = req.body; // This should be 'pending-review'
+
+        if (status !== 'pending-review') {
+            return res.status(400).json({ message: 'Invalid status for this action.' });
+        }
+
+        // Find and update the project, and populate user details for the message
+        const updatedProject = await Project.findByIdAndUpdate(
+            projectId,
+            { status: status },
+            { new: true }
+        ).populate('client assignedFreelancer');
+
+        if (!updatedProject) {
+            return res.status(404).json({ message: 'Project not found.' });
+        }
+
+        // --- Send a chat message to the client ---
+        const client = updatedProject.client;
+        const freelancer = updatedProject.assignedFreelancer;
+
+        if (client && freelancer) {
+            const roomId = [client.firebaseUID, freelancer.firebaseUID].sort().join('-');
+            const notificationMessage = `The project "${updatedProject.title}" is ready for your review. I have sent my GitHub URL to you on WhatsApp!`;
+
+            await Message.create({
+                roomid: roomId,
+                sender: freelancer._id,
+                receiver: client._id,
+                content: notificationMessage,
+                timestamp: new Date()
+            });
+        }
+
+        res.status(200).json({ 
+            message: 'Project status updated and client notified.', 
+            project: updatedProject 
+        });
+
+    } catch (error) {
+        console.error('Error updating project status to pending-review:', error);
+        res.status(500).json({ message: 'An error occurred on the server.' });
+    }
+});
+
+
+// GET all projects for a specific client
+router.get('/clientprojectpage/:firebaseUID', async (req, res) => {
+    try {
+        const { firebaseUID } = req.params;
+
+        // Find the client user by their Firebase UID
+        const client = await User.findOne({ firebaseUID });
+        if (!client) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+
+        // Fetch all projects posted by this client, and populate the freelancer's details and proposals
+        const projects = await Project.find({ client: client._id })
+            .populate('assignedFreelancer', 'name email') // This one is already here
+            .populate({
+                path: 'proposals',
+                populate: {
+                   path: 'freelancer',
+                   select: '_id' // We only need the freelancer's ID for comparison
+                }
+             })
+            .sort({ createdAt: -1 }); // Show the newest projects first
+
+      console.log(
+        "Projects data being sent to frontend:",
+        JSON.stringify(projects, null, 2)
+      );
+      
+        res.json(projects);
+    } catch (error) {
+        console.error('Error fetching client projects:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+
+// GET active project count for a specific client
+router.get('/client/:firebaseUID/active-count', async (req, res) => {
+    try {
+        const { firebaseUID } = req.params;
+        const client = await User.findOne({ firebaseUID });
+
+        if (!client) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+
+        const count = await Project.countDocuments({
+            client: client._id,
+            status: 'in-progress'
+        });
+
+        res.json({ activeCount: count });
+
+    } catch (error) {
+        console.error('Error fetching active project count:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
 module.exports = router;

@@ -124,7 +124,7 @@ function Proposalspage() {
             // Step 5: Update the UI on successful payment
             setProposals((prev) =>
               prev.map((p) =>
-                p._id === proposal._id ? { ...p, status: 'completed' } : p
+                p._id === proposal._id ? { ...p, status: 'accepted' } : p
               )
             );
             alert('Payment successful! Proposal accepted.');

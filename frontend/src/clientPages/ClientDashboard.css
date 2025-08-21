@@ -1,5 +1,275 @@
-.unreadCount{
-    background-color: red;
-    color: black;
-    padding: 5px;
+/* --- ClientDashboard.css --- */
+
+/* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* --- Root Variables for Easy Theming --- */
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --text-dark: #212529;
+    --text-light: #6c757d;
+    --background-color: #eef5ff;
+    --card-background: #ffffff;
+    --border-color: #e0e7ef;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
 }
+
+/* --- General Page Setup --- */
+.client-dashboard-page {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+/* --- Top Navigation Bar --- */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: 65px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.main-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.main-nav .nav-link {
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+.main-nav .nav-link:hover {
+    color: var(--primary-color);
+}
+
+.main-nav .nav-link.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.unread-badge-nav {
+    background-color: var(--danger-color);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: -15px;
+}
+
+.navbar-right .profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.navbar-right .profile-link:hover {
+    color: var(--primary-color);
+}
+
+
+/* --- Main Dashboard Content Layout --- */
+.dashboard-main-content {
+    display: grid;
+    /* UPDATED: Set to 3/4 and 1/4 layout */
+    grid-template-columns: 3fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* --- Left Column --- */
+.projects-main-section {
+    background-color: var(--card-background);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.projects-main-section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+/* --- Right Column (Sidebar) --- */
+.dashboard-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* UPDATED: Restore sticky positioning */
+    position: sticky;
+    top: 85px;
+    /* 65px navbar height + 20px margin */
+}
+
+/* Style for the welcome header card */
+.content-header.card {
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.content-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
+}
+
+.content-header p {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin: 0;
+}
+
+/* --- Profile Call-to-Action Card --- */
+.profile-cta-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(45deg, #1e90ff, #007bff);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-cta-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(30, 144, 255, 0.25);
+}
+
+.cta-info h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.2rem;
+}
+
+.cta-info p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.cta-arrow {
+    font-size: 1.5rem;
+}
+
+
+/* --- Stats Cards Section --- */
+.stats-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.stat-card-side {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 50%;
+    color: white;
+}
+
+.icon-projects {
+    background-color: var(--success-color);
+}
+
+.icon-messages {
+    background-color: var(--warning-color);
+}
+
+.stat-info h3 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.stat-info p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+
+/* --- Responsive Design --- */
+@media (max-width: 1024px) {
+    .dashboard-main-content {
+        grid-template-columns: 1fr;
+        /* Stack columns on smaller screens */
+    }
+
+    .dashboard-right {
+        position: static;
+        /* Unstick the sidebar on smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .top-navbar {
+        padding: 0 1rem;
+    }
+
+    .main-nav {
+        display: none;
+    }
+
+    .dashboard-main-content {
+        padding: 1rem;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+}
+

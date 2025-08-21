@@ -32,7 +32,7 @@ function FreelancerDashboard() {
 
       {/* Second Navbar */}
       <nav className="main-navbar">
-        <Link to="/dashboard" className="nav-link">Home</Link>
+        <Link to="/freelancer/dashboard" className="nav-link">Home</Link>
         <Link to="/project/SearchProjects" className="nav-link">Find Projects</Link>
         <Link to="/messages" className="nav-link">Messages</Link>
         <Link to="/freelancer/myprojects" className="nav-link">My Projects</Link>

@@ -1,0 +1,133 @@
+.project-details-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f5fbfe;
+}
+
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.details-header h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin: 0;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.details-main .details-section {
+    margin-bottom: 2rem;
+}
+
+.details-main h2 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.details-sidebar .sidebar-card {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-card h3 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #4a5568;
+}
+
+.sidebar-card p {
+    margin: 0 0 0.5rem;
+}
+
+/* Proposal List in Details */
+.proposals-list-details .proposal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 0.75rem;
+}
+
+.proposal-item .proposal-freelancer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.proposal-freelancer img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.proposal-bid {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Status Tags */
+.status-tag-details,
+.proposal-status-details {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: capitalize;
+}
+
+.status-in-progress,
+.status-pending-review,
+.status-open {
+    background-color: #ebf8ff;
+    color: #3182ce;
+}
+
+.status-completed {
+    background-color: #f0fff4;
+    color: #38a169;
+}
+
+.status-cancelled {
+    background-color: #f7fafc;
+    color: #718096;
+}
+
+.status-accepted {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-pending {
+    background-color: #fffbeb;
+    color: #92400e;
+}
