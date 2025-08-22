@@ -177,4 +177,70 @@ router.get('/freelancer/:firebaseUID', async (req, res) => {
     }
 });
 
+
+
+// --- NEW ROUTE: Release payment to freelancer ---
+router.post("/release-payment", async (req, res) => {
+  try {
+    const { projectId } = req.body;
+
+    // 1. Find the payment record and populate user details
+    const payment = await Payment.findOne({
+      project: projectId,
+      status: "in_escrow",
+    }).populate("client freelancer");
+
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        message: "No escrowed payment found for this project.",
+      });
+    }
+
+    // 2. [IMPORTANT] Placeholder for actual payout logic with a payment gateway API.
+    console.log(
+      `Simulating payout of ₹${payment.payoutAmount} to freelancer ${payment.freelancer._id}`
+    );
+
+    // 3. Update the payment status to 'released' in your database
+    payment.status = "released";
+    payment.releasedAt = new Date();
+    await payment.save();
+
+    // 4. Update the project status to 'completed'
+    const updatedProject = await Project.findByIdAndUpdate(projectId, {
+      status: "completed",
+    });
+
+    // 5. Send a notification message to the freelancer
+    if (payment.client && payment.freelancer) {
+      const client = payment.client;
+      const freelancer = payment.freelancer;
+      const roomId = [client.firebaseUID, freelancer.firebaseUID]
+        .sort()
+        .join("-");
+      const notificationMessage = `The project "${updatedProject.title}" has been marked as complete. The payment will be visible in your account details within 1-2 days. Make sure your payment details you entered in your profile are correct and updated.`;
+
+      await Message.create({
+        roomid: roomId,
+        sender: client._id, // The client initiates this action
+        receiver: freelancer._id,
+        content: notificationMessage,
+        timestamp: new Date(),
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Payment released to freelancer and project marked as complete.",
+    });
+  } catch (error) {
+    console.error("Error in release-payment:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+
+// ... (existing routes)
+
 module.exports = router;

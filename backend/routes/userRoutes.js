@@ -342,5 +342,38 @@ router.delete('/certifications/:id/:certId', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+// Add this route to your userRoutes.js file
 
+// GET: Fetch all freelancers
+router.get('/freelancers', async (req, res) => {
+  try {
+    const freelancers = await User.find({ roles: 'freelancer' })
+      .select('name profileImage bio skills firebaseUID'); // Select only the fields you need for the list
+    res.json(freelancers);
+  } catch (error) {
+    console.error('Error fetching freelancers:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET: Fetch all reviews for a user
+router.get('/reviews/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findOne({ firebaseUID: userId });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const reviews = await Review.find({ reviewee: user._id })
+            .populate('reviewer', 'name profileImage')
+            .populate('project', 'title');
+
+        res.json(reviews);
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 module.exports = router;

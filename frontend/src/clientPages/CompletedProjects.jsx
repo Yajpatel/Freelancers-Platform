@@ -1,7 +1,10 @@
+// frontend/src/clientPages/CompletedProjects.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/authcontext';
 import './CompletedProjects.css';
+
 
 const CompletedProjects = () => {
   const { currentUser } = useAuth();
@@ -10,6 +13,7 @@ const CompletedProjects = () => {
 
   useEffect(() => {
     if (currentUser) {
+      // The backend route is /project/completed/all, not specific to a client
       axios.get(`http://localhost:8000/project/completed/all`)
         .then(res => {
           setProjects(res.data);
@@ -31,20 +35,29 @@ const CompletedProjects = () => {
   }
 
   return (
+    <>
+       
     <div className="completed-projects-container">
       <h3>Recently Completed Projects</h3>
-      <div className="projects-list">
+      <div className="completed-projects-list">
         {projects.map(project => (
           <div key={project._id} className="project-card">
-            <h4>{project.title}</h4>
-            <p>Freelancer: {project.assignedFreelancer.name}</p>
-            <p>Freelancer ID: {project.assignedFreelancer._id}</p>
-            <p>Rating: {project.assignedFreelancer.rating}</p>
-            <p>Budget: ₹{project.budget}</p>
+            <div className="project-info">
+              <h4>{project.title}</h4>
+              <p>Budget: ₹{project.budget}</p>
+            </div>
+            <div className="freelancer-info">
+              <img src={project.assignedFreelancer.profileImage} alt={project.assignedFreelancer.name} className="freelancer-avatar" />
+              <div className="freelancer-details">
+                <span className="freelancer-name">{project.assignedFreelancer.name}</span>
+                <span className="freelancer-rating">⭐ {project.assignedFreelancer.rating.toFixed(1)}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-    </div>
+      </div>
+      </>
   );
 };
 

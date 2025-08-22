@@ -96,6 +96,9 @@ const seedDatabase = async () => {
         skills: userRoles.includes("freelancer")
           ? faker.helpers.arrayElements(commonSkills, { min: 3, max: 8 })
           : [],
+        rating: userRoles.includes("freelancer")
+          ? faker.finance.amount({ min: 3.5, max: 5.0, dec: 1 })
+          : 0,
         experience: userRoles.includes("freelancer")
           ? [
               {

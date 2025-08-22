@@ -1,0 +1,256 @@
+/* frontend/src/clientPages/ProjectList.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --page-bg: #f8f9fc;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --accent-orange: #f97316;
+    --accent-purple: #8b5cf6;
+    --accent-gray: #64748b;
+}
+
+.project-list-container {
+    background-color: var(--page-bg);
+    font-family: 'Inter', sans-serif;
+    padding: 2rem 2.5rem;
+    min-height: calc(100vh - 70px);
+    /* Full height minus navbar */
+}
+
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* --- V V V NEW INTERACTIVE HEADING STYLES V V V --- */
+.projects-header h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin: 0;
+    /* Create a gradient text effect */
+    background: linear-gradient(45deg, #334155, #0f172a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    transition: text-shadow 0.3s ease;
+}
+
+.projects-header h1:hover {
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    /* Subtle blue glow on hover */
+}
+
+/* --- ^ ^ ^ END OF NEW STYLES ^ ^ ^ --- */
+
+
+.header-tab-title {
+    /* Apply the same gradient to the tab title */
+    background: linear-gradient(45deg, var(--accent-blue), #1d4ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    text-transform: capitalize;
+}
+
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.75rem;
+}
+
+.project-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    border-color: var(--accent-blue);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.card-body {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+}
+
+.card-body p {
+    margin: 0 0 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.card-body p strong {
+    color: #475569;
+    font-weight: 500;
+}
+
+.card-footer {
+    margin-top: auto;
+    /* Pushes footer to the bottom */
+}
+
+/* --- Status Tags --- */
+.status-tag {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status-open {
+    background-color: #eff6ff;
+    color: #3b82f6;
+}
+
+.status-in-progress {
+    background-color: #f0f9ff;
+    color: #0ea5e9;
+}
+
+.status-pending-review {
+    background-color: #fffbeb;
+    color: #f59e0b;
+}
+
+.status-completed {
+    background-color: #f0fdf4;
+    color: #22c55e;
+}
+
+.status-cancelled {
+    background-color: #f1f5f9;
+    color: #64748b;
+}
+
+.status-accepted {
+    background-color: #f0fdf4;
+    color: #16a34a;
+}
+
+.status-rejected {
+    background-color: #fef2f2;
+    color: #ef4444;
+}
+
+.status-pending {
+    background-color: #fffbeb;
+    color: #d97706;
+}
+
+
+/* --- Action Buttons --- */
+.btn,
+.btn-action {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover,
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+.btn-view:hover {
+    background-color: #2563eb;
+}
+
+.btn-approve {
+    background-color: var(--accent-green);
+    color: white;
+}
+
+.btn-approve:hover {
+    background-color: #059669;
+}
+
+.btn-revise {
+    background-color: var(--accent-orange);
+    color: white;
+}
+
+.btn-revise:hover {
+    background-color: #ea580c;
+}
+
+.btn-review {
+    background-color: var(--accent-purple);
+    color: white;
+}
+
+.btn-review:hover {
+    background-color: #7c3aed;
+}
+
+.btn-complete-work {
+    background-color: var(--accent-green);
+    color: white;
+    width: 100%;
+}
+
+.btn-complete-work:hover {
+    background-color: #059669;
+}
+
+.project-actions-multi {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.status-message {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 3rem;
+    font-size: 1.1rem;
+    width: 100%;
+    grid-column: 1 / -1;
+    /* Make it span all columns if grid is empty */
+}

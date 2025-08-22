@@ -1,0 +1,52 @@
+.reviews-list-container {
+    margin-top: 2rem;
+}
+
+.review-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.reviewer-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.reviewer-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.review-project {
+    color: #555;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.review-rating {
+    margin-left: auto;
+}
+
+.star-filled {
+    color: #ffc107;
+}
+
+.star-empty {
+    color: #e0e0e0;
+}
+
+.review-comment {
+    font-style: italic;
+    color: #333;
+}

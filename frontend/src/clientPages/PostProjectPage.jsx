@@ -3,6 +3,7 @@ import { useAuth } from '../context/authcontext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './PostProjectPage.css'; // Corrected CSS import name
+import ClientNavbar from './ClientNavbar';
 
 function PostProjectPage() {
     const { currentUser } = useAuth();
@@ -81,6 +82,8 @@ function PostProjectPage() {
     };
 
     return (
+        <>
+             <ClientNavbar />
         <div className="post-project-container">
             <div className="post-project-form-card">
                 <header className="form-header">
@@ -157,7 +160,8 @@ function PostProjectPage() {
                     </button>
                 </form>
             </div>
-        </div>
+            </div>
+            </>
     );
 }
 

@@ -1,0 +1,158 @@
+/* frontend/src/clientPages/ClientNavbar.css */
+
+.client-main-navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0 2rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar-content {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 500;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #2563eb;
+}
+
+.nav-link.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.btn-post-project-nav {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-post-project-nav:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.profile-link-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #475569;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.profile-link-nav:hover {
+    color: #2563eb;
+}
+
+.profile-link-nav svg {
+    font-size: 1.25rem;
+}
+.nav-dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #475569;
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.dropdown-toggle:hover {
+    color: #2563eb;
+}
+
+.chevron-icon {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.chevron-icon.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    z-index: 1100;
+}
+
+.dropdown-item {
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    color: #334155;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}

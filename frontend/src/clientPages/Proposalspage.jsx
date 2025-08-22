@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/authcontext';
 import './Proposalspage.css';
 import { useNavigate } from 'react-router-dom';
+import ClientNavbar from './ClientNavbar';
 function Proposalspage() {
 
   const navigate = useNavigate();
@@ -188,6 +189,8 @@ function Proposalspage() {
   }
 
   return (
+    <>
+       <ClientNavbar />
     <div className="proposals-container">
       <h1 className="proposals-title">Project Proposals</h1>
       <div className="proposals-list">
@@ -248,7 +251,8 @@ function Proposalspage() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+      </>
   );
 }
 

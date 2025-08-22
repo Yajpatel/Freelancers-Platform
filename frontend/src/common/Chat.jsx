@@ -4,150 +4,118 @@ import { io } from 'socket.io-client';
 import axios from 'axios';
 import './Chat.css';
 import { useAuth } from '../context/authcontext';
+import ClientNavbar from '../clientPages/ClientNavbar'; // Import Client Navbar
+import FreelancerNavbar from '../freelancerPages/FreelancerNavbar'; // Import Freelancer Navbar
 
-const socket = io('http://localhost:8000');  // Connects automatically when page loads
+const socket = io('http://localhost:8000');
 
 const Chat = () => {
-  const { id } = useParams(); //mongodb id of the user (oppposite user)with whom we will be chatting with (not current user id) default generated user_id
+  const { id } = useParams(); // Mongodb id of the other user
+  const { currentUser } = useAuth();
 
-  const [userToChatWith, setUserToChatWith] = useState({});
+  const [userToChatWith, setUserToChatWith] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-
-  const { currentUser } = useAuth();
-  const currentUserFirebaseId = currentUser?.uid; // firebaseUID
-
-  
   const [roomId, setRoomId] = useState('');
+  const [currentUserDetails, setCurrentUserDetails] = useState(null);
 
-
-  const [currentuserdetails, setcurrentuserdetails] = useState(null);
-
-  // Step 1: Fetch Mongo user of current Firebase user
+  // Fetch details for BOTH users to determine roles and setup chat
   useEffect(() => {
-    const fetchcurrentuserdetails = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8000/freelancer/users/getuser/${currentUser.uid}`);
-        setcurrentuserdetails(res.data);
-        console.log('current user all details fetched');
-      } catch (err) {
-        console.error('Failed to fetch current Mongo user:', err);
-        console.log("user details not fetched here");
-      }
-    };
-    if (currentUser?.uid) fetchcurrentuserdetails();
-  }, [currentUser]);
+    if (currentUser?.uid && id) {
+      const fetchUsersAndMessages = async () => {
+        try {
+          // Fetch current user details (to get role and mongo _id)
+          const currentUserRes = await axios.get(`http://localhost:8000/freelancer/users/getuser/${currentUser.uid}`);
+          setCurrentUserDetails(currentUserRes.data);
 
-  useEffect(() => {
-  if (!roomId) return;
+          // Fetch the other user's details
+          const otherUserRes = await axios.get(`http://localhost:8000/freelancer/users/chatgetuser/${id}`);
+          setUserToChatWith(otherUserRes.data);
 
-  // Step 1: join socket room
-  socket.emit('joinRoom', { roomId });
-  console.log(`Socket ${socket.id} joined room ${roomId}`);
+          // Generate a consistent room ID
+          const generatedRoomId = [currentUser.uid, otherUserRes.data.firebaseUID].sort().join('-');
+          setRoomId(generatedRoomId);
+          socket.emit('joinRoom', { roomId: generatedRoomId });
 
-  // Step 2: fetch previous conversation from DB
-  const fetchMessages = async () => {
-    try {
-      const res = await axios.get(
-   `http://localhost:8000/messages/getConversation/${currentUserFirebaseId}/${userToChatWith.firebaseUID}` );
-      setMessages(res.data);
-      console.log("Fetched old messages:", res.data);
-    } catch (err) {
-      console.error("Failed to fetch conversation:", err);
+          // Fetch chat history
+          const messagesRes = await axios.get(`http://localhost:8000/messages/getConversation/${currentUser.uid}/${otherUserRes.data.firebaseUID}`);
+          setMessages(messagesRes.data);
+        } catch (err) {
+          console.error("Failed to initialize chat:", err);
+        }
+      };
+      fetchUsersAndMessages();
     }
-  };
+  }, [currentUser, id]);
 
-  if (currentuserdetails?._id && userToChatWith?._id) {
-    fetchMessages();
-  }
-
-  // Step 3: listen for new socket messages
-  socket.on('receiveMessage', (data) => {
-    setMessages((prev) => [...prev, data]);
-  });
-
-  return () => {
-    socket.off('receiveMessage');
-  };
-}, [roomId, currentuserdetails, userToChatWith]);
-
-
+  // Listen for incoming messages
   useEffect(() => {
-    if (!id || !currentUserFirebaseId) return;
+    socket.on('receiveMessage', (data) => {
+      // Only add message if it belongs to the current room
+      if (data.roomid === roomId) {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }
+    });
 
-    console.log("currUser:", currentUser);
+    return () => {
+      socket.off('receiveMessage');
+    };
+  }, [roomId]);
 
-    axios.get(`http://localhost:8000/freelancer/users/chatgetuser/${id}`)
-      .then((res) => {
-        setUserToChatWith(res.data)
-        console.log("response from backend",res.data);
-        const otherFirebaseUID = res.data.firebaseUID; // Ensure this field exists in backend
-        console.log("otherFirebaseUID",otherFirebaseUID)
-        console.log("currentUserFirebaseId",currentUserFirebaseId)
-        const generatedRoomId = [currentUserFirebaseId, otherFirebaseUID].sort().join('-');
-        console.log("generatedRoomId : ", generatedRoomId);
-        
-        setRoomId(generatedRoomId);
-      })
-      .catch((err) => console.log(err));
-  }, [id,currentUserFirebaseId]);
-
-
-  /// on send button 
   const handleSendMessage = () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !currentUserDetails || !userToChatWith) return;
 
     const messageData = {
-        roomid: roomId,                        // Fix key: must be "roomid" (not roomId)
-        content: newMessage,              // Fix key: must be "content" (not message)
-        sender: currentuserdetails._id,
-        receiver: userToChatWith._id
+      roomid: roomId,
+      content: newMessage,
+      sender: currentUserDetails._id,
+      receiver: userToChatWith._id
     };
 
     socket.emit('sendMessage', messageData);
-    // setMessages(prev => [...prev, { ...messageData, time: new Date() }]);
     setNewMessage('');
   };
 
+  if (!currentUserDetails || !userToChatWith) {
+    return <p>Loading chat...</p>;
+  }
+
   return (
-    <div className="chat-container">
-      <h2>Chat with {userToChatWith.name || 'Loading...'}</h2>
-      <h2>Chat with {userToChatWith.firebaseUID || 'Loading...'}</h2>
+    <>
+      {/* Conditionally render the correct navbar */}
+      {currentUserDetails.currentRole === 'client' && <ClientNavbar />}
+      {currentUserDetails.currentRole === 'freelancer' && <FreelancerNavbar />}
 
-      <p>roomID {roomId}</p>
-      <div className="chat-window">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            //for safety purpose already a string
-            //currentuserdetails._id.toString() 
-          ////////////////////////////////
-            /// actually converting new ObjectId("64b4fe2d7b3cce06fcb7b892") form this to ===> .toString it will become "64b4fe2d7b3cce06fcb7b892"
-            //msg.sender.toString()
-            className={`chat-message ${msg.sender.toString() === currentuserdetails._id.toString() ? 'sent' : 'received'}`}
-          >
-            <p>{msg.content}</p>
-            <small>{new Date(msg.time).toLocaleTimeString()}</small>
-          </div>
-        ))}
+      <div className="chat-container">
+        <h2 className="chat-header">Chat with {userToChatWith.name}</h2>
+        <div className="chat-window">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chat-message ${msg.sender.toString() === currentUserDetails._id.toString() ? 'sent' : 'received'}`}
+            >
+              <p className="chat-text">{msg.content}</p>
+              <small className="chat-time">{new Date(msg.timestamp).toLocaleTimeString()}</small>
+            </div>
+          ))}
+        </div>
+        <div className="chat-input-area">
+          <input
+            type="text"
+            className="chat-input"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            placeholder="Type your message..."
+          />
+          <button onClick={handleSendMessage} className="chat-send-button">Send</button>
+        </div>
       </div>
-
-      <div className="chat-input-area">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button onClick={handleSendMessage}>Send</button>
-      </div>
-    </div>
+    </>
   );
 };
 
 export default Chat;
-
-
 
 
 

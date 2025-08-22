@@ -9,8 +9,9 @@ const userRoutes = require('./routes/userRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const messageRoutes = require('./routes/messagesRoutes')
 const paymentRoutes = require('./routes/paymentroutes')
-
-const Message = require('./models/Message')
+const upload = require('./config/cloudinaryConfig');
+const updateimageroute = require('./routes/updateimageroute');
+const Message = require('./models/Message');
 // const { createServer } = require('node:http'); // same thing const http = require('http');
 
 const http = require('http');
@@ -82,6 +83,8 @@ app.use(express.json());
 // if frontend return some submitted form than to get that response
 app.use(express.urlencoded({extended:true}));
 
+
+
 // just for the testing that is backend on or not otherwise frontend will not go ahead in most files
 // example login sign up first checks if backend started ?
 app.get('/health',(req,res)=>{
@@ -93,7 +96,7 @@ app.use('/freelancer/users', userRoutes);
 app.use('/project',projectRoutes);
 app.use('/messages', messageRoutes);
 app.use('/payment', paymentRoutes);
-
+app.use("/update", updateimageroute);
 // default port i gave in env is 8000
 server.listen(PORT,()=>{
     console.log(`Backend running on port ${PORT}`);

@@ -1,0 +1,44 @@
+.rating-form-container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.star-rating {
+    margin-bottom: 15px;
+}
+
+.star-rating button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ccc;
+}
+
+.star-rating button.on {
+    color: #ffc107;
+}
+
+.star-rating button.off {
+    color: #ccc;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    color: red;
+}
+
+.success-message {
+    color: green;
+}

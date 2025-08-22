@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authcontext';
 import axios from 'axios';
+import ClientNavbar from './ClientNavbar'; 
 
 // Font Awesome Imports
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -52,28 +53,7 @@ const ClientDashboard = () => {
 
     return (
         <div className="client-dashboard-page">
-            {/* Top Navigation Bar (no changes) */}
-            <header className="top-navbar">
-                <div className="navbar-left">
-                    <Link to="/client/dashboard" className="logo">Freelancer</Link>
-                    <nav className="main-nav">
-                        <Link to="/client/dashboard" className={getLinkClass('/client/dashboard')}>Dashboard</Link>
-                        <Link to="/client/myprojects" className={getLinkClass('/client/myprojects')}>My Projects</Link>
-                        <Link to="/find-freelancers" className={getLinkClass('/find-freelancers')}>Find Freelancers</Link>
-                        <Link to="/myproposals" className={getLinkClass('/myproposals')}>Proposals</Link>
-                        <Link to="/messages" className={getLinkClass('/messages')}>
-                            Messages {unreadCount > 0 && <span className="unread-badge-nav">{unreadCount}</span>}
-                        </Link>
-                        <Link to="/clienttransactions" className={getLinkClass('/clienttransactions')}>Transactions</Link>
-                    </nav>
-                </div>
-                <div className="navbar-right">
-                    <Link to={`/profile/${currentUser.uid}`} className="profile-link">
-                        <FontAwesomeIcon icon={faUser} />
-                        <span>My Profile</span>
-                    </Link>
-                </div>
-            </header>
+            <ClientNavbar />
 
             {/* Main Content Area - Layout Updated */}
             <main className="dashboard-main-content">
