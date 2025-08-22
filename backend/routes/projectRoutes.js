@@ -524,30 +524,43 @@ router.get('/:projectId/proposals', async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
+// backend/routes/projectRoutes.js
 
 // POST a new review for a completed project
 router.post('/:projectId/review', async (req, res) => {
     try {
         const { projectId } = req.params;
-        const { rating, comment, reviewerId, revieweeId } = req.body;
+        const { rating, comment, reviewerId, revieweeId } = req.body; // reviewerId is the Firebase UID
 
-        // 1. Check if a review already exists from this reviewer for this project
-        const existingReview = await Review.findOne({ project: projectId, reviewer: reviewerId });
+        // --- FIX START ---
+
+        // 1. Find the reviewer's User document using their Firebase UID to get their MongoDB _id.
+        const reviewerUser = await User.findOne({ firebaseUID: reviewerId });
+        if (!reviewerUser) {
+            return res.status(404).json({ message: 'Reviewer user not found.' });
+        }
+        const reviewerMongoId = reviewerUser._id; // This is the ObjectId we need.
+
+        // --- FIX END ---
+
+
+        // 2. Check if a review already exists from this reviewer for this project, using the correct MongoDB _id.
+        const existingReview = await Review.findOne({ project: projectId, reviewer: reviewerMongoId });
         if (existingReview) {
             return res.status(400).json({ message: 'You have already submitted a review for this project.' });
         }
 
-        // 2. Create the new review
+        // 3. Create the new review using the MongoDB _id.
         const newReview = new Review({
             project: projectId,
-            reviewer: reviewerId,
+            reviewer: reviewerMongoId, // Use the fetched MongoDB ObjectId
             reviewee: revieweeId,
             rating,
             comment,
         });
         await newReview.save();
 
-        // 3. Add the review to the reviewee's profile and update their average rating
+        // 4. Add the review to the reviewee's profile and update their average rating
         const reviewee = await User.findById(revieweeId);
         if (reviewee) {
             reviewee.reviews.push(newReview._id);
@@ -567,4 +580,5 @@ router.post('/:projectId/review', async (req, res) => {
         res.status(500).json({ message: 'Server Error'  });
     }
 });
+
 module.exports = router;
