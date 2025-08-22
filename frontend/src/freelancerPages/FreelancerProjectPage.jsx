@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/authcontext';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
-import '../clientPages/ProjectList.css'; // <-- 1. IMPORT THE NEW UNIFIED CSS
+import './FreelancerProjectPage.css'; // <-- 1. IMPORT THE NEW UNIFIED CSS
 import FreelancerNavbar from './FreelancerNavbar';
 
 function useQuery() {

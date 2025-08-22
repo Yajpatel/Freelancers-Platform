@@ -7,14 +7,53 @@ const Proposal = require("../models/Proposal");
 const User = require("../models/User");
 const Message = require("../models/Message");
 const Review = require("../models/Review")
-router.get("/SearchProjects", async (req, res) => {
-  const pendingprojects = await Project.find({
-    status: "open",
-    assignedFreelancer: null,
-  });
-  console.log(pendingprojects);
-  res.json(pendingprojects);
+
+
+router.post("/search", async (req, res) => {
+  try {
+    const { searchTerm, budget, skills } = req.body;
+
+    // 1. Build a dynamic query object for MongoDB
+    let query = {
+      status: "open", // Always filter for open projects
+      assignedFreelancer: null,
+    };
+
+    // 2. Add search term filter (case-insensitive)
+    if (searchTerm) {
+      query.title = { $regex: searchTerm, $options: "i" };
+    }
+
+    // 3. Add budget range filter
+    if (budget) {
+      // Add $gte (greater than or equal to) if min is provided
+      if (budget.min) {
+        query.budget = { ...query.budget, $gte: Number(budget.min) };
+      }
+      // Add $lte (less than or equal to) if max is provided
+      if (budget.max) {
+        query.budget = { ...query.budget, $lte: Number(budget.max) };
+      }
+    }
+
+    // 4. Add skills filter (must contain ALL specified skills)
+     if (skills && skills.length > 0) {
+       const skillRegex = skills.map(
+         (skill) => new RegExp("^" + skill + "$", "i")
+       );
+       query.skills = { $all: skillRegex };
+     }
+
+    // 5. Execute the query
+    const projects = await Project.find(query).sort({ createdAt: -1 });
+
+    res.json(projects);
+  } catch (error) {
+    console.error("Error searching projects:", error);
+    res.status(500).json({ message: "Server error during project search." });
+  }
 });
+
 
 router.get("/projectdetails/:id", async (req, res) => {
   try {
