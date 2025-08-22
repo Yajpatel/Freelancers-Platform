@@ -620,4 +620,18 @@ router.post('/:projectId/review', async (req, res) => {
     }
 });
 
+// GET: Fetch top 10 highest paying projects
+router.get('/top-paying', async (req, res) => {
+    try {
+        const topProjects = await Project.find({ status: 'open' })
+            .sort({ budget: -1 })
+            .limit(10);
+        res.json(topProjects);
+    } catch (error) {
+        console.error('Error fetching top paying projects:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+
 module.exports = router;

@@ -1,120 +1,195 @@
-.dashboard-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* --- FreelancerDashboard.css --- */
+
+/* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Root Variables for a Fresh Theme --- */
+:root {
+  --primary-accent: #3b82f6;
+  --primary-accent-hover: #2563eb;
+  --text-dark: #1e293b;
+  --text-secondary: #64748b;
+  --background-main: #f1f5f9;
+  --card-background: #ffffff;
+  --border-light: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --success-bg: #ecfdf5;
+  --success-text: #065f46;
+  --warning-bg: #fffbeb;
+  --warning-text: #b45309;
+}
+
+/* --- General Page Setup --- */
+.freelancer-dashboard-page {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-main);
   min-height: 100vh;
-  background-color: #f0f2f5;
-  color: #333;
+  color: var(--text-dark);
 }
 
-/* Top Navbar */
-.top-navbar {
-  background-color: #ffffff;
-  padding: 12px 30px;
+/* --- Main Dashboard Content Layout --- */
+.dashboard-main-content {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 2.5rem;
+  padding: 2.5rem;
+  max-width: 1536px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* --- Left Column --- */
+.projects-main-section {
+  background-color: transparent;
+}
+
+.projects-main-section h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-dark);
+}
+
+/* --- Project List (Full-width cards) --- */
+.project-list {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.project-card {
+  background-color: var(--card-background);
+  padding: 1.5rem 2rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.project-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-accent);
+}
+
+.project-info h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 0.5rem 0;
+}
+
+.project-item-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.project-info p:last-child {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.details-button {
+  display: inline-flex;
   align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-  font-size: 26px;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.top-nav-links .nav-link {
-  color: #2c3e50;
+  gap: 0.5rem;
+  color: var(--primary-accent);
   text-decoration: none;
-  margin-left: 20px;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.top-nav-links .nav-link:hover {
-  color: #007bff;
-}
-
-/* Second Navbar */
-.main-navbar {
-  background-color: #ffffff;
-  padding: 10px 30px;
-  display: flex;
-  gap: 25px;
-  border-bottom: 1px solid #ddd;
-}
-
-.main-navbar .nav-link {
-  color: #555;
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-}
-
-.main-navbar .nav-link::after {
-  content: "";
-  display: block;
-  width: 0;
-  height: 2px;
-  background: #007bff;
-  transition: width 0.3s;
-}
-
-.main-navbar .nav-link:hover::after {
-  width: 100%;
-}
-
-.main-navbar .nav-link:hover {
-  color: #007bff;
-}
-
-/* Body */
-.dashboard-body {
-  padding: 40px;
-  text-align: center;
-}
-
-.dashboard-body h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.dashboard-body p {
-  color: #666;
-  font-size: 16px;
-}
-
-.card-container {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-top: 40px;
-  flex-wrap: wrap;
-}
-
-.dashboard-card {
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  width: 240px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid #eee;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-}
-
-.dashboard-card-title {
-  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 10px;
-  color: #2c3e50;
+  margin-top: 1rem;
 }
 
-.dashboard-card-desc {
-  font-size: 14px;
-  color: #666;
+.details-button:hover {
+  color: var(--primary-accent-hover);
+  text-decoration: underline;
+}
+
+/* --- Right Column (Sidebar) --- */
+.dashboard-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 100px;
+}
+
+.content-header.card {
+  background-color: var(--card-background);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.content-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.content-header p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* --- Stats Cards Section --- */
+.stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.stat-card-side {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--card-background);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.stat-icon {
+  font-size: 1.25rem;
+  padding: 0.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.icon-projects {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.icon-messages {
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.stat-info h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stat-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 1024px) {
+  .dashboard-main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-right {
+    position: static;
+  }
 }

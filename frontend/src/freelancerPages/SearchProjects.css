@@ -26,7 +26,7 @@ body {
   align-items: flex-start;
 }
 
-/* --- Filter Sidebar (No changes) --- */
+/* --- Filter Sidebar --- */
 .filter-sidebar {
   background-color: var(--card-bg);
   padding: 1.5rem;
@@ -100,7 +100,6 @@ body {
   border-radius: 8px;
 }
 
-/* --- ✅ UPDATED HEADER STYLES --- */
 .results-header {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
@@ -118,7 +117,6 @@ body {
   white-space: nowrap;
 }
 
-/* --- ✅ NEW SEARCH BAR STYLES --- */
 .header-search-bar {
   position: relative;
   width: 100%;
@@ -128,7 +126,7 @@ body {
 .header-search-bar .search-icon {
   position: absolute;
   left: 0.9rem;
-  top: 50%;
+  top: 35%;
   transform: translateY(-50%);
   color: var(--text-light);
 }
@@ -140,6 +138,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
 .header-search-bar input:focus {
@@ -149,7 +148,7 @@ body {
 }
 
 
-/* --- Project List (No changes) --- */
+/* --- Project List --- */
 .project-list-container {
   padding: 0;
 }
@@ -243,491 +242,11 @@ body {
   color: var(--text-light);
 }
 
-/* frontend/src/freelancerPages/SearchProjects.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-:root {
-    --page-bg: #f8f9fa;
-    --border-color: #dee2e6;
-    --text-dark: #212529;
-    --text-light: #6c757d;
-    --primary-blue: #0d6efd;
-    --card-bg: #ffffff;
-    --link-color: #0d6efd;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--page-bg);
-}
-
-.search-page-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: flex-start;
-}
-
-/* --- Filter Sidebar --- */
-.filter-sidebar {
-    background-color: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    position: sticky;
-    top: 90px;
-}
-
-.filter-section {
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-}
-.filter-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.filter-section h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--text-dark);
-}
-
-.filter-section label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-dark);
-}
-
-.filter-section input[type="text"],
-.filter-section input[type="number"] {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    margin-top: 0.5rem;
-}
-
-.budget-inputs {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.budget-inputs span {
-    color: var(--text-light);
-}
-
-.skill-checkbox-list {
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 0.5rem;
-}
-
-.skill-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-/* --- Main Project Results Area --- */
-.project-results-area {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-}
-
-.results-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-}
-
-.results-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0;
-    color: var(--text-dark);
-    white-space: nowrap;
-}
-
-.header-search-bar {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-}
-
-.header-search-bar .search-icon {
-    position: absolute;
-    left: 0.9rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-light);
-}
-
-.header-search-bar input {
-    width: 100%;
-    padding: 0.6rem 0.8rem 0.6rem 2.5rem;
-    font-size: 0.9rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    /* ✅ FIX: Added box-sizing */
-    box-sizing: border-box; 
-}
-
-.header-search-bar input:focus {
-    outline: none;
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
-}
-
-
-/* --- Project List --- */
-.project-list-container {
-    padding: 0;
-}
-
-.project-list-item {
-    display: flex;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.project-list-item:hover {
-    background-color: #f1f3f5;
-}
-
-.project-list-item:last-child {
-    border-bottom: none;
-}
-
-.project-item-main {
-    flex: 1;
-}
-
-.project-item-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--link-color);
-    margin: 0 0 0.5rem;
-}
-
-.project-item-description {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.project-item-skills .skill-tag {
-    display: inline-block;
-    background-color: #e9ecef;
-    color: #495057;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.project-item-footer {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    font-size: 0.8rem;
-    color: var(--text-light);
-}
-
-.client-rating .fa-star {
-    color: #fd7e14; /* Orange for stars */
-}
-.client-rating .rating-text {
-    margin-left: 0.25rem;
-    font-weight: 500;
-}
-
-.project-item-aside {
-    text-align: right;
-    min-width: 120px;
-}
-
-.proposal-count {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-dark);
-}
-
-.project-budget {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-top: 0.5rem;
-}
-
-.loading-spinner, .no-results-message {
-    text-align: center;
-    padding: 4rem;
-    color: var(--text-light);
-}/* frontend/src/freelancerPages/SearchProjects.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-:root {
-    --page-bg: #f8f9fa;
-    --border-color: #dee2e6;
-    --text-dark: #212529;
-    --text-light: #6c757d;
-    --primary-blue: #0d6efd;
-    --card-bg: #ffffff;
-    --link-color: #0d6efd;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--page-bg);
-}
-
-.search-page-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: flex-start;
-}
-
-/* --- Filter Sidebar --- */
-.filter-sidebar {
-    background-color: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    position: sticky;
-    top: 90px;
-}
-
-.filter-section {
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-}
-.filter-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.filter-section h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--text-dark);
-}
-
-.filter-section label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-dark);
-}
-
-.filter-section input[type="text"],
-.filter-section input[type="number"] {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    margin-top: 0.5rem;
-}
-
-.budget-inputs {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.budget-inputs span {
-    color: var(--text-light);
-}
-
-.skill-checkbox-list {
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 0.5rem;
-}
-
-.skill-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-/* --- Main Project Results Area --- */
-.project-results-area {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-}
-
-.results-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-}
-
-.results-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0;
-    color: var(--text-dark);
-    white-space: nowrap;
-}
-
-.header-search-bar {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-}
-
-.header-search-bar .search-icon {
-    position: absolute;
-    left: 0.9rem;
-    top: 35%;
-    transform: translateY(-50%);
-    color: var(--text-light);
-}
-
-.header-search-bar input {
-    width: 100%;
-    padding: 0.6rem 0.8rem 0.6rem 2.5rem;
-    font-size: 0.9rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    /* ✅ FIX: Added box-sizing */
-    box-sizing: border-box; 
-}
-
-.header-search-bar input:focus {
-    outline: none;
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
-}
-
-
-/* --- Project List --- */
-.project-list-container {
-    padding: 0;
-}
-
-.project-list-item {
-    display: flex;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.project-list-item:hover {
-    background-color: #f1f3f5;
-}
-
-.project-list-item:last-child {
-    border-bottom: none;
-}
-
-.project-item-main {
-    flex: 1;
-}
-
-.project-item-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--link-color);
-    margin: 0 0 0.5rem;
-}
-
-.project-item-description {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.project-item-skills .skill-tag {
-    display: inline-block;
-    background-color: #e9ecef;
-    color: #495057;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.project-item-footer {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    font-size: 0.8rem;
-    color: var(--text-light);
-}
-
-.client-rating .fa-star {
-    color: #fd7e14; /* Orange for stars */
-}
-.client-rating .rating-text {
-    margin-left: 0.25rem;
-    font-weight: 500;
-}
-
-.project-item-aside {
-    text-align: right;
-    min-width: 120px;
-}
-
-.proposal-count {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-dark);
-}
-
-.project-budget {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-top: 0.5rem;
-}
-
-.loading-spinner, .no-results-message {
-    text-align: center;
-    padding: 4rem;
-    color: var(--text-light);
-}
-
-/* Add these new styles to your SearchProjects.css file */
-
 .custom-skill-input {
   width: 90% !important;
   padding: 0.4rem 0.35rem !important;
-    font-size: 0.85rem !important;
-    margin-bottom: 0.75rem;
+  font-size: 0.85rem !important;
+  margin-bottom: 0.75rem;
 }
 
 .selected-skills-tags {

@@ -1,60 +1,82 @@
 import React, { useEffect, useState } from 'react';
-// import './Dashboard.css'; 
 import { Link } from "react-router-dom";
-import { auth } from '../firebase/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import axios from 'axios';
+import { useAuth } from '../context/authcontext';
+import FreelancerNavbar from './FreelancerNavbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolderOpen, faComments, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './FreelancerDashboard.css';
 
-function FreelancerDashboard() {
-  const [firebaseUID, setFirebaseUID] = useState("");
+const FreelancerDashboard = () => {
+    const { currentUser } = useAuth();
+    const [topProjects, setTopProjects] = useState([]);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setFirebaseUID(user.uid);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+    useEffect(() => {
+        const fetchTopProjects = async () => {
+            try {
+                const res = await axios.get('http://localhost:8000/project/top-paying');
+                setTopProjects(res.data);
+            } catch (error) {
+                console.error("Error fetching top paying projects:", error);
+            }
+        };
 
-  return (
-    <div className="dashboard-container">
+        fetchTopProjects();
+    }, []);
 
-      {/* Top Navbar */}
-      <nav className="top-navbar">
-        <div className="logo">Freelancer</div>
-        <div className="top-nav-links">
-          <Link to={`/profile/${firebaseUID}`} className="nav-link">
-            My Profile
-          </Link>
+    return (
+        <div className="freelancer-dashboard-page">
+            <FreelancerNavbar />
+
+            <main className="dashboard-main-content">
+                <div className="dashboard-left">
+                    <div className="projects-main-section">
+                        <h2>Top 10 Highest Paying Projects</h2>
+                        <div className="project-list">
+                            {topProjects.map(project => (
+                                <div key={project._id} className="project-card">
+                                    <div className="project-info">
+                                        <h4>{project.title}</h4>
+                                        <p className="project-item-description">
+                                            {project.description.substring(0, 280)}...
+                                        </p>
+                                        <p>Budget: ₹{project.budget}</p>
+                                    </div>
+                                    <Link to={`/project/projectdetails/${project._id}`} className="details-button">
+                                        View Details <FontAwesomeIcon icon={faArrowRight} />
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <aside className="dashboard-right">
+                    <div className="content-header card">
+                        <h1>Welcome, {currentUser?.name || 'Freelancer'}!</h1>
+                        <p>Here's a summary of your activity.</p>
+                    </div>
+
+                    <div className="stats-container">
+                        <div className="stat-card-side">
+                            <FontAwesomeIcon icon={faFolderOpen} className="stat-icon icon-projects" />
+                            <div className="stat-info">
+                                <h3>0</h3>
+                                <p>Active Projects</p>
+                            </div>
+                        </div>
+                        <div className="stat-card-side">
+                            <FontAwesomeIcon icon={faComments} className="stat-icon icon-messages" />
+                            <div className="stat-info">
+                                <h3>0</h3>
+                                <p>Unread Messages</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </main>
         </div>
-      </nav>
-
-      {/* Second Navbar */}
-      <nav className="main-navbar">
-        <Link to="/freelancer/dashboard" className="nav-link">Home</Link>
-        <Link to="/project/SearchProjects" className="nav-link">Find Projects</Link>
-        <Link to="/messages" className="nav-link">Messages</Link>
-        <Link to="/freelancer/myprojects" className="nav-link">My Projects</Link>
-        <Link to="/freelancertransaction" className="nav-link">Mytransactions</Link>
-      </nav>
-
-      {/* Body */}
-      <div className="dashboard-body">
-        <h1>Welcome to Your Dashboard!</h1>
-        <p>Explore projects or connect with freelancers to get started.</p>
-
-        <div className="card-container">
-          <div className="dashboard-card">Recent Projects</div>
-          {/* <div className="dashboard-card">Top Freelancers</div> */}
-          {/* <div className="dashboard-card">Your Activity</div> */}
-        </div>
-      </div>
-
-    </div>
-  );
-}
-
-
+    );
+};
 
 export default FreelancerDashboard;
