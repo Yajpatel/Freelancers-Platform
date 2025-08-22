@@ -24,6 +24,9 @@
 }
 
 .navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1.6rem;
     font-weight: 700;
     color: #2563eb;
@@ -32,26 +35,35 @@
 
 .navbar-links {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
+    align-items: center;
 }
 
 .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     text-decoration: none;
     color: #475569;
     font-weight: 500;
-    padding-bottom: 5px;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: color 0.2s ease, background-color 0.2s ease;
     position: relative;
 }
 
 .nav-link:hover {
+    background-color: #f1f5f9;
     color: #2563eb;
 }
 
 .nav-link.active {
     color: #2563eb;
-    border-bottom-color: #2563eb;
+    background-color: #eff6ff;
+}
+
+.nav-icon {
+    font-size: 0.9rem;
 }
 
 .navbar-actions {
@@ -94,6 +106,7 @@
 .profile-link-nav svg {
     font-size: 1.25rem;
 }
+
 .nav-dropdown {
     position: relative;
 }
@@ -109,16 +122,19 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding-bottom: 5px;
-    border-bottom: 2px solid transparent;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    width: 100%;
 }
 
 .dropdown-toggle:hover {
+    background-color: #f1f5f9;
     color: #2563eb;
 }
 
 .chevron-icon {
     font-size: 0.7rem;
+    margin-left: auto;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -138,10 +154,14 @@
     border: 1px solid #e2e8f0;
     padding: 0.5rem;
     min-width: 180px;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 0.25rem;
     z-index: 1100;
+}
+
+.dropdown-menu.open {
+    display: flex;
 }
 
 .dropdown-item {
@@ -156,4 +176,106 @@
 .dropdown-item:hover {
     background-color: #f1f5f9;
     color: #1e293b;
+}
+
+/* --- Responsive Design --- */
+
+.hamburger-icon {
+    display: none;
+    background: none;
+    border: none;
+    color: #475569;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.mobile-nav-menu {
+    display: none;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 1024px) {
+    .navbar-links.desktop-nav {
+        display: none;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .hamburger-icon {
+        display: block;
+    }
+
+    .profile-link-nav span {
+        display: none;
+    }
+
+    .mobile-nav-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        z-index: 999;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .mobile-nav-menu nav {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .mobile-nav-menu .nav-link,
+    .mobile-nav-menu .dropdown-toggle {
+        padding: 0.8rem 1rem;
+        width: 100%;
+        text-align: left;
+        border-radius: 6px;
+        justify-content: flex-start;
+    }
+
+    .mobile-nav-menu .nav-link:hover,
+    .mobile-nav-menu .dropdown-toggle:hover {
+        background-color: #f1f5f9;
+    }
+
+    .mobile-nav-menu .nav-dropdown {
+        width: 100%;
+    }
+
+    .mobile-nav-menu .nav-dropdown .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding: 0.5rem 0 0.5rem 1.5rem;
+        width: 100%;
+        margin-top: 0.5rem;
+        background-color: #f8fafc;
+        border-radius: 6px;
+        display: none;
+    }
+
+    .mobile-nav-menu .nav-dropdown .dropdown-menu.open {
+        display: flex;
+    }
+
+    /* ✅ FINAL FIX FOR VISIBLE TEXT ✅ */
+    /* This more specific rule ensures the text inside mobile dropdown items is always visible */
+    .mobile-nav-menu .nav-dropdown .dropdown-menu a.dropdown-item {
+        color: #375072 !important;
+    }
+
+    .mobile-nav-menu .btn-post-project-nav {
+        width: 100%;
+        margin-top: 1rem;
+        text-align: center;
+    }
 }
