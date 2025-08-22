@@ -8,11 +8,11 @@ import Register from './components/auth/register/register'
 import ProfilePage from './common/ProfilePage';
 import SearchProjects from './freelancerPages/SearchProjects'
 import Projectdetails from './freelancerPages/Projectdetails'
-import Chat from './common/Chat';
+
 import ClientDashboard from './clientPages/ClientDashboard';
 import FreelancerDashboard from './freelancerPages/FreelancerDashboard'
 import RoleProvider from './context/Rolecontext';
-import Message from './common/Message';
+
 import Proposalspage from './clientPages/Proposalspage';
 import ClientProjectPage from './clientPages/ClientProjectPage';
 import FreelancerProjectPage from './freelancerPages/FreelancerProjectPage';
@@ -21,6 +21,7 @@ import ClientTransactionPage from './clientPages/ClientTransactionPage';
 import FreelancerTransactionsPage from './freelancerPages/FreelancerTransactionsPage';
 import DetailedProjectPage from './common/DetailedProjectPage';
 import FindFreelancers from './clientPages/FindFreelancers';
+import ChatPage from './common/ChatPage';
 function App() {
   return (
     <>  
@@ -37,9 +38,13 @@ function App() {
         <Route path="/profile/:id" element={<ProfilePage />} />
         <Route path="/project/SearchProjects" element={<SearchProjects />} />
         <Route path="/project/projectdetails/:id" element={<Projectdetails />} />
-        
+{/*         
         <Route path="/chat/:id" element={<Chat/>}></Route>
-        <Route path="/messages" element={<Message/>}></Route>
+            <Route path="/messages" element={<Message />}></Route> */}
+            
+            <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat/:id" element={<ChatPage />} />
+
         <Route path="/myproposals" element={<Proposalspage/>}></Route>
         {/* <Route path="/my-projects" element={<MyProjectpage/>}></Route> */}
         <Route path="/client/myprojects" element={<ClientProjectPage/>}></Route>

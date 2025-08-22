@@ -7,7 +7,7 @@ import '../clientPages/ClientNavbar.css';
 import NavDropdown from '../clientPages/NavDropdown'; // <-- IMPORT THE DROPDOWN
 
 function FreelancerNavbar() {
-    const { currentUser } = useAuth();
+    const { currentUser,unreadCount  } = useAuth();
 
     const projectItems = [
         { label: 'Active Projects', path: '/freelancer/myprojects?tab=active' },
@@ -28,7 +28,8 @@ function FreelancerNavbar() {
                     <NavLink to="/freelancer/dashboard" className="nav-link">Dashboard</NavLink>
                     <NavLink to="/project/SearchProjects" className="nav-link">Find Projects</NavLink>
                     <NavDropdown title="My Work" items={projectItems} />
-                    <NavLink to="/messages" className="nav-link">Messages</NavLink>
+                    <NavLink to="/chat" className="nav-link">Messages
+                    {unreadCount > 0 && <span className="unread-badge-nav">{unreadCount}</span>}</NavLink> {/* <-- This line is updated */}
                     <NavDropdown title="Earnings" items={earningItems} />
                 </nav>
                 <div className="navbar-actions">

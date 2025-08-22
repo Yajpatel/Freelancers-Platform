@@ -7,7 +7,7 @@ import './ClientNavbar.css';
 import NavDropdown from './NavDropdown';
 
 function ClientNavbar() {
-    const { currentUser } = useAuth();
+    const { currentUser,unreadCount  } = useAuth();
     const navigate = useNavigate();
 
     const projectItems = [
@@ -40,8 +40,9 @@ function ClientNavbar() {
                     <NavLink to="/findfreelancers" className="nav-link">
                         <FontAwesomeIcon icon={faSearch} className="nav-icon" /> Find Freelancers
                     </NavLink>
-                    <NavLink to="/messages" className="nav-link">
+                    <NavLink to="/chat" className="nav-link"> {/* <-- This line is updated */}
                         <FontAwesomeIcon icon={faComments} className="nav-icon" /> Messages
+                        {unreadCount > 0 && <span className="unread-badge-nav">{unreadCount}</span>}
                     </NavLink>
                     <NavDropdown title={<><FontAwesomeIcon icon={faTasks} className="nav-icon" /> My Projects</>} items={projectItems} />
                     <NavDropdown title={<><FontAwesomeIcon icon={faCreditCard} className="nav-icon" /> Transactions</>} items={transactionItems} />

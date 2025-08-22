@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect,useCallback  } from "react";
 import { auth } from "../../firebase/firebase";
 import { onAuthStateChanged, GoogleAuthProvider } from "firebase/auth";
+import axios from "axios";
 
 const AuthContext = React.createContext();
 
@@ -14,6 +15,20 @@ export function AuthProvider({ children }) {
   const [isEmailUser, setIsEmailUser] = useState(false);
   const [isGoogleUser, setIsGoogleUser] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0); // Add state for unread count
+
+
+  // Function to fetch or refresh the unread count
+  const fetchUnreadCount = useCallback(async (uid) => {
+    if (!uid) return;
+    try {
+      const res = await axios.get(`http://localhost:8000/messages/getunreadcount/${uid}`);
+      setUnreadCount(res.data.unreadCount);
+    } catch (error) {
+      console.error("Failed to fetch unread count:", error);
+      setUnreadCount(0); // Reset on error
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
@@ -64,7 +79,9 @@ export function AuthProvider({ children }) {
     isEmailUser,
     isGoogleUser,
     currentUser,
-    setCurrentUser
+    setCurrentUser,
+    unreadCount, // Expose count
+    refreshUnreadCount: () => fetchUnreadCount(currentUser?.uid)
   };
 
   return (

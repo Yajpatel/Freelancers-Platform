@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import './ProfilePage.css'; // We will create this new CSS file
+import './ProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../firebase/auth";
-import ReviewsList from "./ReviewsList"; // Import the new component
+import ReviewsList from "./ReviewsList";
+import ClientNavbar from '../clientPages/ClientNavbar';
+import FreelancerNavbar from '../freelancerPages/FreelancerNavbar';
+import { useAuth } from "../context/authcontext";
 
 // Helper component for cleaner code
 const ProfileSection = ({ title, sectionKey, isEditing, onEdit, onSave, onCancel, children }) => {
@@ -35,6 +38,7 @@ const ProfileSection = ({ title, sectionKey, isEditing, onEdit, onSave, onCancel
 
 function ProfilePage() {
     const { id } = useParams();
+    const { currentUser } = useAuth();
     const [user, setUser] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [editingSection, setEditingSection] = useState(null);
@@ -91,10 +95,6 @@ function ProfilePage() {
             console.error("Education update failed:", err);
         }
     };
-
-
-
-
 
     const handleCancel = () => {
         setEditingSection(null);
@@ -161,8 +161,6 @@ function ProfilePage() {
         }
     };
 
-
-
     const handleFormChange = (e, section) => {
         // Handle nested objects like paymentInfo
         if (typeof formData === 'object' && !Array.isArray(formData)) {
@@ -186,283 +184,296 @@ function ProfilePage() {
     }
     if (!user) return <div className="loading-container">Loading Profile...</div>;
 
+    const renderNavbar = () => {
+        if (user.currentRole === 'client') {
+            return <ClientNavbar />;
+        } else if (user.currentRole === 'freelancer') {
+            return <FreelancerNavbar />;
+        }
+        return null;
+    };
+
+
     return (
-        <div className="profile-page-container">
-            {/* Main Content Column */}
-            <main className="profile-main">
-                <div className="profile-card">
-                    <div className="profile-header">
-                        <img src={user.profileImage} alt="Profile" className="profile-image" />
-                        <div className="profile-info">
-                            <h2>{user.name}</h2>
-                            <p className="email">{user.email}</p>
-                            <p className="location">{user.location || "Location not set"}</p>
+        <>
+            {renderNavbar()}
+            <div className="profile-page-container">
+                {/* Main Content Column */}
+                <main className="profile-main">
+                    <div className="profile-card">
+                        <div className="profile-header">
+                            <img src={user.profileImage} alt="Profile" className="profile-image" />
+                            <div className="profile-info">
+                                <h2>{user.name}</h2>
+                                <p className="email">{user.email}</p>
+                                <p className="location">{user.location || "Location not set"}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <ProfileSection title="About Me" sectionKey="bio" isEditing={editingSection === 'bio'} onEdit={handleEdit} onSave={handleSave} onCancel={handleCancel}>
-                    {editingSection === 'bio' ? (
-                        <textarea value={formData} onChange={(e) => setFormData(e.target.value)} placeholder="Tell us about yourself..." />
-                    ) : (
-                        <p>{user.bio || "No bio available. Click the edit icon to add one."}</p>
-                    )}
-                </ProfileSection>
+                    <ProfileSection title="About Me" sectionKey="bio" isEditing={editingSection === 'bio'} onEdit={handleEdit} onSave={handleSave} onCancel={handleCancel}>
+                        {editingSection === 'bio' ? (
+                            <textarea value={formData} onChange={(e) => setFormData(e.target.value)} placeholder="Tell us about yourself..." />
+                        ) : (
+                            <p>{user.bio || "No bio available. Click the edit icon to add one."}</p>
+                        )}
+                    </ProfileSection>
 
-                <ProfileSection title="Skills" sectionKey="skills" isEditing={editingSection === 'skills'} onEdit={handleEdit} onSave={handleSave} onCancel={handleCancel}>
-                    {editingSection === 'skills' ? (
-                        <input type="text" value={Array.isArray(formData) ? formData.join(', ') : ''} onChange={(e) => setFormData(e.target.value.split(',').map(s => s.trim()))} placeholder="React, Node.js, Figma..." />
-                    ) : (
-                        <div className="skills-list">
-                            {user.skills?.length > 0
-                                ? user.skills.map((s, i) => <span key={i} className="skill-badge">{s}</span>)
-                                : <p>No skills added.</p>}
-                        </div>
-                    )}
-                </ProfileSection>
+                    <ProfileSection title="Skills" sectionKey="skills" isEditing={editingSection === 'skills'} onEdit={handleEdit} onSave={handleSave} onCancel={handleCancel}>
+                        {editingSection === 'skills' ? (
+                            <input type="text" value={Array.isArray(formData) ? formData.join(', ') : ''} onChange={(e) => setFormData(e.target.value.split(',').map(s => s.trim()))} placeholder="React, Node.js, Figma..." />
+                        ) : (
+                            <div className="skills-list">
+                                {user.skills?.length > 0
+                                    ? user.skills.map((s, i) => <span key={i} className="skill-badge">{s}</span>)
+                                    : <p>No skills added.</p>}
+                            </div>
+                        )}
+                    </ProfileSection>
 
-                <ProfileSection
-                    title="Work Experience"
-                    sectionKey="experience"
-                    isEditing={editingSection === 'experience'}
-                    onEdit={handleEdit}
-                    onSave={handleSaveExperience} // use dedicated save
-                    onCancel={handleCancel}
-                >
-                    {editingSection === 'experience' ? (
-                        <div>
-                            {formData.experience?.map((exp, index) => (
-                                <div key={index} className="experience-form-item">
-                                    <input
-                                        type="text"
-                                        placeholder="Role"
-                                        value={exp.role || ""}
-                                        onChange={(e) => {
-                                            const newExp = [...formData.experience];
-                                            newExp[index].role = e.target.value;
-                                            setFormData(prev => ({ ...prev, experience: newExp }));
-                                        }}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Company"
-                                        value={exp.company || ""}
-                                        onChange={(e) => {
-                                            const newExp = [...formData.experience];
-                                            newExp[index].company = e.target.value;
-                                            setFormData(prev => ({ ...prev, experience: newExp }));
-                                        }}
-                                    />
-                                    <input
-                                        type="date"
-                                        placeholder="Start Date"
-                                        value={exp.startDate ? exp.startDate.split('T')[0] : ""}
-                                        onChange={(e) => {
-                                            const newExp = [...formData.experience];
-                                            newExp[index].startDate = e.target.value;
-                                            setFormData(prev => ({ ...prev, experience: newExp }));
-                                        }}
-                                    />
-                                    <input
-                                        type="date"
-                                        placeholder="End Date"
-                                        value={exp.endDate ? exp.endDate.split('T')[0] : ""}
-                                        onChange={(e) => {
-                                            const newExp = [...formData.experience];
-                                            newExp[index].endDate = e.target.value;
-                                            setFormData(prev => ({ ...prev, experience: newExp }));
-                                        }}
-                                    />
-                                    <textarea
-                                        placeholder="Description"
-                                        value={exp.description || ""}
-                                        onChange={(e) => {
-                                            const newExp = [...formData.experience];
-                                            newExp[index].description = e.target.value;
-                                            setFormData(prev => ({ ...prev, experience: newExp }));
-                                        }}
-                                    />
-                                    <button
-                                        onClick={async () => {
-                                            const exp = formData.experience[index];
+                    <ProfileSection
+                        title="Work Experience"
+                        sectionKey="experience"
+                        isEditing={editingSection === 'experience'}
+                        onEdit={handleEdit}
+                        onSave={handleSaveExperience} // use dedicated save
+                        onCancel={handleCancel}
+                    >
+                        {editingSection === 'experience' ? (
+                            <div>
+                                {formData.experience?.map((exp, index) => (
+                                    <div key={index} className="experience-form-item">
+                                        <input
+                                            type="text"
+                                            placeholder="Role"
+                                            value={exp.role || ""}
+                                            onChange={(e) => {
+                                                const newExp = [...formData.experience];
+                                                newExp[index].role = e.target.value;
+                                                setFormData(prev => ({ ...prev, experience: newExp }));
+                                            }}
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Company"
+                                            value={exp.company || ""}
+                                            onChange={(e) => {
+                                                const newExp = [...formData.experience];
+                                                newExp[index].company = e.target.value;
+                                                setFormData(prev => ({ ...prev, experience: newExp }));
+                                            }}
+                                        />
+                                        <input
+                                            type="date"
+                                            placeholder="Start Date"
+                                            value={exp.startDate ? exp.startDate.split('T')[0] : ""}
+                                            onChange={(e) => {
+                                                const newExp = [...formData.experience];
+                                                newExp[index].startDate = e.target.value;
+                                                setFormData(prev => ({ ...prev, experience: newExp }));
+                                            }}
+                                        />
+                                        <input
+                                            type="date"
+                                            placeholder="End Date"
+                                            value={exp.endDate ? exp.endDate.split('T')[0] : ""}
+                                            onChange={(e) => {
+                                                const newExp = [...formData.experience];
+                                                newExp[index].endDate = e.target.value;
+                                                setFormData(prev => ({ ...prev, experience: newExp }));
+                                            }}
+                                        />
+                                        <textarea
+                                            placeholder="Description"
+                                            value={exp.description || ""}
+                                            onChange={(e) => {
+                                                const newExp = [...formData.experience];
+                                                newExp[index].description = e.target.value;
+                                                setFormData(prev => ({ ...prev, experience: newExp }));
+                                            }}
+                                        />
+                                        <button
+                                            onClick={async () => {
+                                                const exp = formData.experience[index];
 
-                                            if (exp._id) {
-                                                try {
-                                                    // Call DELETE API for existing experience
-                                                    await axios.delete(`http://localhost:8000/freelancer/users/experience/${id}/${exp._id}`);
-                                                    // Remove from local formData after successful deletion
+                                                if (exp._id) {
+                                                    try {
+                                                        // Call DELETE API for existing experience
+                                                        await axios.delete(`http://localhost:8000/freelancer/users/experience/${id}/${exp._id}`);
+                                                        // Remove from local formData after successful deletion
+                                                        const newExp = formData.experience.filter((_, i) => i !== index);
+                                                        setFormData(prev => ({ ...prev, experience: newExp }));
+
+                                                        // Update user state to reflect deletion immediately
+                                                        setUser(prevUser => ({
+                                                            ...prevUser,
+                                                            experience: prevUser.experience.filter(e => e._id !== exp._id)
+                                                        }));
+                                                    } catch (err) {
+                                                        console.error('Failed to delete experience:', err);
+                                                    }
+                                                } else {
+                                                    // If experience is not yet saved in DB, just remove locally
                                                     const newExp = formData.experience.filter((_, i) => i !== index);
                                                     setFormData(prev => ({ ...prev, experience: newExp }));
-
-                                                    // Update user state to reflect deletion immediately
-                                                    setUser(prevUser => ({
-                                                        ...prevUser,
-                                                        experience: prevUser.experience.filter(e => e._id !== exp._id)
-                                                    }));
-                                                } catch (err) {
-                                                    console.error('Failed to delete experience:', err);
                                                 }
-                                            } else {
-                                                // If experience is not yet saved in DB, just remove locally
-                                                const newExp = formData.experience.filter((_, i) => i !== index);
-                                                setFormData(prev => ({ ...prev, experience: newExp }));
-                                            }
-                                        }}
-                                    >
-                                        Remove
-                                    </button>
+                                            }}
+                                        >
+                                            Remove
+                                        </button>
 
-                                </div>
-                            ))}
-                            <button
-                                onClick={() => setFormData(prev => ({
-                                    ...prev,
-                                    experience: [...(prev.experience || []), { role: "", company: "", startDate: "", endDate: "", description: "" }]
-                                }))}
-                            >
-                                Add Experience
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="experience-list">
-                            {user.experience?.length > 0
-                                ? user.experience.map((exp, i) => (
-                                    <div key={i} className="list-item">
-                                        <h4>{exp.role} at {exp.company}</h4>
-                                        <p>{new Date(exp.startDate).getFullYear()} - {exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'}</p>
-                                        <p>{exp.description}</p>
                                     </div>
-                                ))
-                                : <p>No work experience added.</p>
-                            }
-                        </div>
-                    )}
-                </ProfileSection>
+                                ))}
+                                <button
+                                    onClick={() => setFormData(prev => ({
+                                        ...prev,
+                                        experience: [...(prev.experience || []), { role: "", company: "", startDate: "", endDate: "", description: "" }]
+                                    }))}
+                                >
+                                    Add Experience
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="experience-list">
+                                {user.experience?.length > 0
+                                    ? user.experience.map((exp, i) => (
+                                        <div key={i} className="list-item">
+                                            <h4>{exp.role} at {exp.company}</h4>
+                                            <p>{new Date(exp.startDate).getFullYear()} - {exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'}</p>
+                                            <p>{exp.description}</p>
+                                        </div>
+                                    ))
+                                    : <p>No work experience added.</p>
+                                }
+                            </div>
+                        )}
+                    </ProfileSection>
 
 
-                <ProfileSection
-                    title="Education"
-                    sectionKey="education"
-                    isEditing={editingSection === 'education'}
-                    onEdit={handleEdit}
-                    onSave={handleSaveEducation} // dedicated save
-                    onCancel={handleCancel}
-                >
-                    {editingSection === 'education' ? (
-                        <div>
-                            {formData.education?.map((edu, index) => (
-                                <div key={index} className="education-form-item">
-                                    <input
-                                        type="text"
-                                        placeholder="Degree"
-                                        value={edu.degree || ""}
-                                        onChange={(e) => {
-                                            const newEdu = [...formData.education];
-                                            newEdu[index].degree = e.target.value;
-                                            setFormData(prev => ({ ...prev, education: newEdu }));
-                                        }}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="School"
-                                        value={edu.school || ""}
-                                        onChange={(e) => {
-                                            const newEdu = [...formData.education];
-                                            newEdu[index].school = e.target.value;
-                                            setFormData(prev => ({ ...prev, education: newEdu }));
-                                        }}
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="Start Year"
-                                        value={edu.startYear || ""}
-                                        onChange={(e) => {
-                                            const newEdu = [...formData.education];
-                                            newEdu[index].startYear = e.target.value;
-                                            setFormData(prev => ({ ...prev, education: newEdu }));
-                                        }}
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="End Year"
-                                        value={edu.endYear || ""}
-                                        onChange={(e) => {
-                                            const newEdu = [...formData.education];
-                                            newEdu[index].endYear = e.target.value;
-                                            setFormData(prev => ({ ...prev, education: newEdu }));
-                                        }}
-                                    />
-                                    <button
-                                        onClick={async () => {
-                                            const currentEdu = formData.education[index];
+                    <ProfileSection
+                        title="Education"
+                        sectionKey="education"
+                        isEditing={editingSection === 'education'}
+                        onEdit={handleEdit}
+                        onSave={handleSaveEducation} // dedicated save
+                        onCancel={handleCancel}
+                    >
+                        {editingSection === 'education' ? (
+                            <div>
+                                {formData.education?.map((edu, index) => (
+                                    <div key={index} className="education-form-item">
+                                        <input
+                                            type="text"
+                                            placeholder="Degree"
+                                            value={edu.degree || ""}
+                                            onChange={(e) => {
+                                                const newEdu = [...formData.education];
+                                                newEdu[index].degree = e.target.value;
+                                                setFormData(prev => ({ ...prev, education: newEdu }));
+                                            }}
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="School"
+                                            value={edu.school || ""}
+                                            onChange={(e) => {
+                                                const newEdu = [...formData.education];
+                                                newEdu[index].school = e.target.value;
+                                                setFormData(prev => ({ ...prev, education: newEdu }));
+                                            }}
+                                        />
+                                        <input
+                                            type="number"
+                                            placeholder="Start Year"
+                                            value={edu.startYear || ""}
+                                            onChange={(e) => {
+                                                const newEdu = [...formData.education];
+                                                newEdu[index].startYear = e.target.value;
+                                                setFormData(prev => ({ ...prev, education: newEdu }));
+                                            }}
+                                        />
+                                        <input
+                                            type="number"
+                                            placeholder="End Year"
+                                            value={edu.endYear || ""}
+                                            onChange={(e) => {
+                                                const newEdu = [...formData.education];
+                                                newEdu[index].endYear = e.target.value;
+                                                setFormData(prev => ({ ...prev, education: newEdu }));
+                                            }}
+                                        />
+                                        <button
+                                            onClick={async () => {
+                                                const currentEdu = formData.education[index];
 
-                                            if (currentEdu._id) {
-                                                try {
-                                                    await axios.delete(`http://localhost:8000/freelancer/users/education/${id}/${currentEdu._id}`);
+                                                if (currentEdu._id) {
+                                                    try {
+                                                        await axios.delete(`http://localhost:8000/freelancer/users/education/${id}/${currentEdu._id}`);
+                                                        const newEduList = formData.education.filter((_, i) => i !== index);
+                                                        setFormData(prev => ({ ...prev, education: newEduList }));
+
+                                                        setUser(prevUser => ({
+                                                            ...prevUser,
+                                                            education: prevUser.education.filter(e => e._id !== currentEdu._id)
+                                                        }));
+                                                    } catch (err) {
+                                                        console.error('Failed to delete education:', err);
+                                                    }
+                                                } else {
                                                     const newEduList = formData.education.filter((_, i) => i !== index);
                                                     setFormData(prev => ({ ...prev, education: newEduList }));
-
-                                                    setUser(prevUser => ({
-                                                        ...prevUser,
-                                                        education: prevUser.education.filter(e => e._id !== currentEdu._id)
-                                                    }));
-                                                } catch (err) {
-                                                    console.error('Failed to delete education:', err);
                                                 }
-                                            } else {
-                                                const newEduList = formData.education.filter((_, i) => i !== index);
-                                                setFormData(prev => ({ ...prev, education: newEduList }));
-                                            }
-                                        }}
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            ))}
-                            <button
-                                onClick={() => setFormData(prev => ({
-                                    ...prev,
-                                    education: [...(prev.education || []), { degree: "", school: "", startYear: "", endYear: "" }]
-                                }))}
-                            >
-                                Add Education
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="education-list">
-                            {user.education?.length > 0
-                                ? user.education.map((edu, i) => (
-                                    <div key={i} className="list-item">
-                                        <h4>{edu.degree} from {edu.school}</h4>
-                                        <p>{edu.startYear} - {edu.endYear}</p>
+                                            }}
+                                        >
+                                            Remove
+                                        </button>
                                     </div>
-                                ))
-                                : <p>No education details added.</p>
-                            }
-                        </div>
-                    )}
-                </ProfileSection>
-                <ReviewsList reviews={reviews} />
-            </main>
+                                ))}
+                                <button
+                                    onClick={() => setFormData(prev => ({
+                                        ...prev,
+                                        education: [...(prev.education || []), { degree: "", school: "", startYear: "", endYear: "" }]
+                                    }))}
+                                >
+                                    Add Education
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="education-list">
+                                {user.education?.length > 0
+                                    ? user.education.map((edu, i) => (
+                                        <div key={i} className="list-item">
+                                            <h4>{edu.degree} from {edu.school}</h4>
+                                            <p>{edu.startYear} - {edu.endYear}</p>
+                                        </div>
+                                    ))
+                                    : <p>No education details added.</p>
+                                }
+                            </div>
+                        )}
+                    </ProfileSection>
+                    <ReviewsList reviews={reviews} />
+                </main>
 
-            {/* Sidebar Column */}
-            <aside className="profile-sidebar">
-                <div className="sidebar-section">
-                    <h3 className="section-title">Verification Status</h3>
-                    <ul className="verification-list">
-                        <li>{user.verification?.emailVerified ? "✅" : "❌"} Email Verified</li>
-                        <li>{user.verification?.phoneVerified ? "✅" : "❌"} Phone Verified</li>
-                        <li>{user.verification?.idVerified ? "✅" : "❌"} ID Verified</li>
-                    </ul>
-                </div>
+                {/* Sidebar Column */}
+                <aside className="profile-sidebar">
+                    <div className="sidebar-section">
+                        <h3 className="section-title">Verification Status</h3>
+                        <ul className="verification-list">
+                            <li>{user.verification?.emailVerified ? "✅" : "❌"} Email Verified</li>
+                            <li>{user.verification?.phoneVerified ? "✅" : "❌"} Phone Verified</li>
+                            <li>{user.verification?.idVerified ? "✅" : "❌"} ID Verified</li>
+                        </ul>
+                    </div>
 
-                <button className="btn btn-primary chat-btn" onClick={() => navigate(`/chat/${user._id}`)}>Chat with {user.name.split(' ')[0]}</button>
+                    <button className="btn btn-primary chat-btn" onClick={() => navigate(`/chat/${user._id}`)}>Chat with {user.name.split(' ')[0]}</button>
 
-                <button className="btn btn-danger logout-btn" onClick={handleLogout}>
-                    Logout
-                </button>
-            </aside>
-        </div>
+                    <button className="btn btn-danger logout-btn" onClick={handleLogout}>
+                        Logout
+                    </button>
+                </aside>
+            </div>
+        </>
     );
 }
 
